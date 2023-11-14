@@ -1,0 +1,50 @@
+[
+  {
+    "image": "assets/chair.png",
+    "itemName": "Wooden Chair",
+    "date": "2023-01-01",
+    "coins": "+3",
+    "action": "post",
+    "category": "Furniture",
+    "distance": 0.2,
+    "condition": "LN",
+    "lat": 40.11049763915532,
+    "lng": -88.22830990000001
+  },
+  {
+    "image": "assets/chair2.png",
+    "itemName": "Office Chair",
+    "date": "2023-02-01",
+    "coins": "+1",
+    "action": "claim",
+    "category": "Furniture",
+    "distance": 0.4,
+    "condition": "LN",
+    "lat": 40.11159767699478,
+    "lng": -88.23088596411003
+  },
+  {
+    "image": "assets/desk.png",
+    "itemName": "Desk",
+    "date": "2023-04-01",
+    "coins": "+1",
+    "action": "claim",
+    "category": "Furniture",
+    "distance": 0.2,
+    "condition": "WW",
+    "lat": 40.10658935503921,
+    "lng": -88.2321555467846
+  },
+  {
+    "image": "assets/lawnmower.png",
+    "itemName": "Lawnmower",
+    "date": "2023-04-01",
+    "coins": "+1",
+    "action": "claim",
+    "category": "Tools",
+    "distance": 0.4,
+    "condition": "SU",
+    "lat": 40.10648152843716,
+    "lng": -88.23222210038442
+  }
+]

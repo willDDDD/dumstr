@@ -9,6 +9,12 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  image_picker: ^0.8.5+3
+  google_maps_flutter: ^2.5.0
+  geocoding: ^2.0.3
+  timer_count_down: ^2.2.0
+  google_fonts: ^6.1.0
+
 
 dev_dependencies:
   flutter_test:
@@ -17,3 +23,10 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+  assets:
+    - assets/data.json
+    - assets/chair.png
+    - assets/chair2.png
+    - assets/desk.png
+    - assets/lawnmower.png
+    - assets/chair.jpg
