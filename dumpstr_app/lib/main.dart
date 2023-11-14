@@ -30,7 +30,7 @@ class MyApp extends StatelessWidget {
         '/profile': (context) => ProfilePage(),
         '/postClaimHistory': (context) => PostClaimHistoryPage(),
         '/coinSystemHelp': (context) => CoinSystemHelpPage(),
-        '/itemPage':(content) => ItemInfo(),
+        // '/itemPage':(content) => ItemInfo(),
       },
     );
   }

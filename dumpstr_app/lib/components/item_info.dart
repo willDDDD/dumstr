@@ -3,40 +3,42 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:timer_count_down/timer_count_down.dart';
 
 class ItemInfo extends StatefulWidget {
+  final LatLng postion;
+  final String itemAddress;
+  final String itemName;
+  final String discription;
+  final double distance;
+  final String itemType;
+  final String condition;
+  bool hidden;
+  final double timeSincePosted;
+
+  ItemInfo({
+    Key? key,
+    required this.postion,
+    required this.itemAddress,
+    required this.itemName,
+    required this.discription,
+    required this.distance,
+    required this.itemType,
+    required this.condition,
+    required this.hidden,
+    required this.timeSincePosted,
+  }) : super(key: key);
   @override
   _ItemInfoState createState() => _ItemInfoState();
 }
 
 class _ItemInfoState extends State<ItemInfo> {
-  int _currentIndex = 0;
-  int _counter = 0;
-  // Google Maps controller
   late GoogleMapController mapController;
-
-  // Initial map position
-  final LatLng _initialPosition = const LatLng(37.7749, -122.4194);
-  String itemAddress = "511 W Elm st Urbana, IL 61801";
-  String itemName = "Wood Chair";
-  String discription =
-      "Old chair that I have had for 2 years. One of the legs is a bit wobbly but other then that it's great!";
-  double distance = 1.5;
-  String itemType = "Furniture";
-  String condition = "Well-Used";
-  bool isItemHidden = false;
   int hideTimer = 3600;
-  double timeSincePosted = 5;
-  Set<Marker> _markers = {
-    Marker(
-      markerId: MarkerId("item_location"),
-      position:
-      LatLng(37.7749, -122.4194), // Replace with your desired location
-    ),
-  };
+  Set<Marker> _markers = {};
 
   @override
   Widget build(BuildContext context) {
+    _markers.add(
+        Marker(markerId: MarkerId("item_location"), position: widget.postion));
     return Scaffold(
-      // backgroundColor: isItemHidden ? Colors.grey : Colors.white,
       appBar: AppBar(
           title: const Text("Item Info"),
           centerTitle: true,
@@ -50,27 +52,20 @@ class _ItemInfoState extends State<ItemInfo> {
             ),
           ]),
       body: ListView(
-        // mainAxisAlignment: MainAxisAlignment.center,
-        // crossAxisAlignment: ossAxisAlignment.start,
-
         children: <Widget>[
           Card(
             margin: EdgeInsets.symmetric(horizontal: 30),
-            // decoration: BoxDecoration(
-            //   border: Border.all(
-            //     color: Colors.black, // Set the border color
-            //     width: 1.0, // Set the border width
-            //   ),
-            //   borderRadius: BorderRadius.circular(
-            //       8.0), // Adjust the border radius as needed
-            // ),
+            clipBehavior: Clip.antiAliasWithSaveLayer,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(
+                  12), // Adjust the value to change the curvature
+            ),
             child: Column(children: [
-              ClipRRect(
-                borderRadius: BorderRadius.circular(16.0),
+              Container(
                 child: Image.asset(
                   "assets/chair.jpg",
-                  width: 225,
-                  height: 225,
+                  height: 300,
+                  width: 400,
                   fit: BoxFit.cover,
                 ),
               ),
@@ -78,94 +73,77 @@ class _ItemInfoState extends State<ItemInfo> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Padding(
-                    padding: EdgeInsets.only(left: 40.0),
-                    child: Text(
-                      itemName,
-                      style: const TextStyle(
-                        fontSize: 18,
-                      ),
+                  Text(
+                    widget.itemName,
+                    style: const TextStyle(
+                      fontSize: 18,
                     ),
                   ),
                   Text(
-                    "$itemType, $condition, Posted $timeSincePosted hours ago",
+                    "${widget.itemType}, ${widget.condition}, Posted ${widget.timeSincePosted} hours ago",
                     style: TextStyle(fontSize: 12),
                   ),
                   Text(
-                    discription,
+                    widget.discription,
                     style: TextStyle(fontSize: 12),
                   ),
                 ],
               ),
             ]),
           ),
-          Padding(
-            padding: EdgeInsets.symmetric(horizontal: 30),
-            child: Container(
-              padding: EdgeInsets.all(8.0),
-              decoration: BoxDecoration(
-                border: Border.all(
-                  color: Colors.black, // Set the border color
-                  width: 1.0, // Set the border width
-                ),
-                borderRadius: BorderRadius.circular(
-                    8.0), // Adjust the border radius as needed
-              ),
-              child: Column(children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Padding(
-                      padding: EdgeInsets.only(left: 40.0),
-                      child: Text(
-                        "Location",
-                        style: TextStyle(
-                          fontSize: 18,
-                        ),
-                      ),
-                    ),
-                    Row(
-                      children: [
-                        const Icon(Icons.location_on),
-                        Text(
-                          itemAddress,
-                          style: TextStyle(fontSize: 12),
-                        ),
-                        SizedBox(width: 8),
-                        const Icon(Icons.directions_walk),
-                        Text(
-                          "$distance miles",
-                          style: TextStyle(fontSize: 12),
-                        ),
-                      ],
-                    ),
-                    ClipRRect(
-                      //Google Map
-                      borderRadius: BorderRadius.circular(16.0),
-                      child: Container(
-                        width: 275,
-                        height: 100,
-                        child: GoogleMap(
-                          initialCameraPosition: CameraPosition(
-                            target: _initialPosition,
-                            zoom: 15.0,
-                          ),
-                          markers: _markers,
-                          onMapCreated: (GoogleMapController controller) {
-                            setState(() {
-                              mapController = controller;
-                            });
-                          },
-                          // zoomControlsEnabled: false,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ]),
-            ),
-          ),
           const SizedBox(height: 16),
+          Card(
+            margin: EdgeInsets.symmetric(horizontal: 30),
+            clipBehavior: Clip.antiAliasWithSaveLayer,
+            child: Column(children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Padding(
+                    padding: EdgeInsets.only(left: 40.0),
+                    child: Text(
+                      "Location",
+                      style: TextStyle(
+                        fontSize: 18,
+                      ),
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      const Icon(Icons.location_on),
+                      Text(
+                        widget.itemAddress,
+                        style: TextStyle(fontSize: 12),
+                      ),
+                      SizedBox(width: 8),
+                      const Icon(Icons.directions_walk),
+                      Text(
+                        "${widget.distance} miles",
+                        style: TextStyle(fontSize: 12),
+                      ),
+                    ],
+                  ),
+                  Container(
+                    width: 400,
+                    height: 100,
+                    child: GoogleMap(
+                      initialCameraPosition: CameraPosition(
+                        target: widget.postion,
+                        zoom: 15.0,
+                      ),
+                      markers: _markers,
+                      onMapCreated: (GoogleMapController controller) {
+                        setState(() {
+                          mapController = controller;
+                        });
+                      },
+                      // zoomControlsEnabled: false,
+                    ),
+                  ),
+                ],
+              ),
+            ]),
+          ),
           const SizedBox(
             height: 2,
           ),
@@ -174,29 +152,30 @@ class _ItemInfoState extends State<ItemInfo> {
             padding: EdgeInsets.symmetric(horizontal: 30),
             child: ElevatedButton(
               onPressed: () {
-                if (!isItemHidden) {
+                if (!widget.hidden) {
                   _showHideConfirmationDialog();
                 }
               },
               style: ElevatedButton.styleFrom(
-                  backgroundColor: isItemHidden ? Colors.purple : Colors.green),
+                  backgroundColor:
+                      widget.hidden ? Colors.purple : Colors.green),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(isItemHidden ? Icons.visibility_off : Icons.visibility,
+                  Icon(widget.hidden ? Icons.visibility_off : Icons.visibility,
                       color: Colors.black),
                   SizedBox(width: 8),
                   Text(
-                    isItemHidden ? "Hidden" : "Hide item for 5 coins",
+                    widget.hidden ? "Hidden" : "Hide item for 5 coins",
                     style: TextStyle(color: Colors.black),
                   ),
-                  if (isItemHidden) ...[
+                  if (widget.hidden) ...[
                     SizedBox(width: 8),
                     Countdown(
                       seconds: hideTimer,
                       build: (BuildContext context, double time) {
                         final Duration duration =
-                        Duration(seconds: time.toInt());
+                            Duration(seconds: time.toInt());
 
                         // Calculate the remaining minutes
                         final int minutes = duration.inMinutes;
@@ -209,7 +188,7 @@ class _ItemInfoState extends State<ItemInfo> {
                       interval: Duration(seconds: 1),
                       onFinished: () {
                         setState(() {
-                          isItemHidden = false;
+                          widget.hidden = false;
                         });
                       },
                     ),
@@ -245,16 +224,6 @@ class _ItemInfoState extends State<ItemInfo> {
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: (int index) {
-          setState(() {
-            _currentIndex = index;
-          });
-
-          if (index == 2) { // Assuming 'Profile' is at index 2
-            Navigator.pushNamed(context, '/profile'); // Navigates to ProfilePage
-          }
-        },
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.search),
@@ -271,6 +240,11 @@ class _ItemInfoState extends State<ItemInfo> {
         ],
         selectedItemColor: Colors.grey, // Customize the selected item color
         unselectedItemColor: Colors.grey, // Customize the unselected item color
+        currentIndex: 0, // Set the current index as needed
+        onTap: (index) {
+          // Handle item taps here
+          // You can use the index to determine which icon was tapped
+        },
       ),
     );
   }
@@ -293,7 +267,7 @@ class _ItemInfoState extends State<ItemInfo> {
               onPressed: () {
                 // Add logic to deduct 5 coins and hide the item
                 setState(() {
-                  isItemHidden = true;
+                  widget.hidden = true;
                 });
                 Navigator.of(context).pop();
               },
