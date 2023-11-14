@@ -1,4 +1,4 @@
-# dumstr_map_view
+# dumstr
 
 A new Flutter project.
 
