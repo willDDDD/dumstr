@@ -3,9 +3,8 @@
         android:label="dumpstr_app"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyBo6Nx1QKP-dDN4yqf_4zM8XbgFGicLEzk" />
+        <meta-data android:name="com.google.android.geo.API_KEY"
+               android:value="AIzaSyDc-YQ_0ATwBXONdLQUI07B2GLO9j5oreg"/>
         <activity
             android:name=".MainActivity"
             android:exported="true"
