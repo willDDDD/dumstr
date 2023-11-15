@@ -5,6 +5,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:dumpstr_app/components/filter.dart';
 import 'package:dumpstr_app/components/MapView.dart';
 import 'package:dumpstr_app/components/ListView.dart';
+import 'package:dumpstr_app/components/BottomNavbar.dart';
 
 class Listing {
   final String image;
@@ -174,44 +175,7 @@ class _HomePageState extends State<HomePage> {
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: (int index) {
-          setState(() {
-            _currentIndex = index;
-          });
-
-          if (index == 0) {
-            // Assuming 'Profile' is at index 2
-            Navigator.pushNamed(
-                context, '/home'); // Navigates to ProfilePage
-          } else if (index == 1) {
-            // Assuming 'Profile' is at index 2
-            Navigator.pushNamed(
-                context, '/post'); // Navigates to ProfilePage
-          } else if (index == 2) {
-            // Assuming 'Profile' is at index 2
-            Navigator.pushNamed(
-                context, '/profile'); // Navigates to ProfilePage
-          }
-        },
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Search',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.add),
-            label: 'Add',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-          ),
-        ],
-        selectedItemColor: Colors.grey, // Customize the selected item color
-        unselectedItemColor: Colors.grey, // Customize the unselected item color
-      ),
+      bottomNavigationBar: BottomNavbar(),
     );
   }
 }

@@ -2,6 +2,36 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart' show rootBundle;
+import 'dart:math';
+import 'package:dumpstr_app/components/item_info.dart';
+
+class CustomMarker {
+  final String id;
+  final LatLng position;
+  final String itemName;
+  final String itemDescription;
+  final String image;
+  final String itemAddress;
+  final double distance;
+  final String category;
+  final String condition;
+  final bool hidden;
+  final double timeSincePosted;
+
+  CustomMarker({
+    required this.id,
+    required this.position,
+    required this.itemName,
+    required this.itemDescription,
+    required this.image,
+    required this.itemAddress,
+    required this.distance,
+    required this.category,
+    required this.condition,
+    required this.hidden,
+    required this.timeSincePosted,
+  });
+}
 
 class MapView extends StatefulWidget {
   final Function(GoogleMapController controller) onMapCreated;
@@ -37,7 +67,7 @@ class _MapViewState extends State<MapView> {
     String jsonData = await rootBundle.loadString('assets/data.json');
     List<dynamic> jsonList = json.decode(jsonData);
 
-    List<Marker> markers = [];
+    List<CustomMarker> customMarkers = [];
 
     for (var json in jsonList) {
       if ((widget.category == 'All' || widget.category == json['category']) &&
@@ -47,25 +77,70 @@ class _MapViewState extends State<MapView> {
               widget.condition == json['condition'])) {
         LatLng position =
             LatLng(json['lat'].toDouble(), json['lng'].toDouble());
-        final imgIcon = await BitmapDescriptor.fromAssetImage(
-            const ImageConfiguration(size: Size(48, 48)), json['image']);
 
-        markers.add(
-          Marker(
-            markerId: MarkerId(json['id'].toString()),
+        customMarkers.add(
+          CustomMarker(
+            id: json['id'].toString(),
             position: position,
-            icon: imgIcon,
-            infoWindow: InfoWindow(
-              title: json['itemName'],
-            ),
+            itemName: json['itemName'],
+            itemDescription: json['description'],
+            image: json['image'],
+            itemAddress: json['itemAddress'],
+            distance: json['distance'],
+            category: json['category'],
+            condition: json['condition'],
+            hidden: json['hidden'],
+            timeSincePosted: json['timeSincePosted'],
           ),
         );
       }
     }
 
-    // print('Selected Category: ${widget.category}');
-    // print('Selected Distance: ${widget.distance}');
-    // print('Selected Condition: ${widget.condition}');
+    return convertCustomMarkersToMarkers(customMarkers);
+  }
+
+  Future<List<Marker>> convertCustomMarkersToMarkers(
+      List<CustomMarker> customMarkers) async {
+    List<Marker> markers = [];
+
+    for (var customMarker in customMarkers) {
+      final imgIcon = await BitmapDescriptor.fromAssetImage(
+        const ImageConfiguration(size: Size(48, 48)),
+        customMarker.image,
+      );
+
+      markers.add(
+        Marker(
+          markerId: MarkerId(customMarker.id),
+          position: customMarker.position,
+          icon: imgIcon,
+          infoWindow: InfoWindow(
+            title: customMarker.itemName,
+            snippet: customMarker.itemDescription,
+          ),
+          onTap: () {
+            // Handle marker tap here, and navigate to the item's page
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ItemInfo(
+                  position: customMarker.position,
+                  itemAddress: customMarker.itemAddress,
+                  itemName: customMarker.itemName,
+                  description: customMarker.itemDescription,
+                  distance: customMarker.distance,
+                  category: customMarker.category,
+                  condition: customMarker.condition,
+                  hidden: customMarker.hidden,
+                  timeSincePosted: customMarker.timeSincePosted,
+                  image: customMarker.image,
+                ),
+              ),
+            );
+          },
+        ),
+      );
+    }
 
     return markers;
   }
