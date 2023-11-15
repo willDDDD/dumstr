@@ -1,30 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:timer_count_down/timer_count_down.dart';
+import 'package:dumpstr_app/components/BottomNavbar.dart';
 
 class ItemInfo extends StatefulWidget {
-  final LatLng postion;
+  final LatLng position;
   final String itemAddress;
   final String itemName;
-  final String discription;
+  final String description;
   final double distance;
-  final String itemType;
+  final String category;
   final String condition;
   bool hidden;
   final double timeSincePosted;
+  final String image;
 
-  ItemInfo({
-    Key? key,
-    required this.postion,
-    required this.itemAddress,
-    required this.itemName,
-    required this.discription,
-    required this.distance,
-    required this.itemType,
-    required this.condition,
-    required this.hidden,
-    required this.timeSincePosted,
-  }) : super(key: key);
+  ItemInfo(
+      {Key? key,
+      required this.position,
+      required this.itemAddress,
+      required this.itemName,
+      required this.description,
+      required this.distance,
+      required this.category,
+      required this.condition,
+      required this.hidden,
+      required this.timeSincePosted,
+      required this.image})
+      : super(key: key);
   @override
   _ItemInfoState createState() => _ItemInfoState();
 }
@@ -37,7 +40,7 @@ class _ItemInfoState extends State<ItemInfo> {
   @override
   Widget build(BuildContext context) {
     _markers.add(
-        Marker(markerId: MarkerId("item_location"), position: widget.postion));
+        Marker(markerId: MarkerId("item_location"), position: widget.position));
     return Scaffold(
       appBar: AppBar(
           title: const Text("Item Info"),
@@ -63,7 +66,7 @@ class _ItemInfoState extends State<ItemInfo> {
             child: Column(children: [
               Container(
                 child: Image.asset(
-                  "assets/chair.jpg",
+                  widget.image,
                   height: 300,
                   width: 400,
                   fit: BoxFit.cover,
@@ -80,11 +83,11 @@ class _ItemInfoState extends State<ItemInfo> {
                     ),
                   ),
                   Text(
-                    "${widget.itemType}, ${widget.condition}, Posted ${widget.timeSincePosted} hours ago",
+                    "${widget.category}, ${widget.condition}, Posted ${widget.timeSincePosted} hours ago",
                     style: TextStyle(fontSize: 12),
                   ),
                   Text(
-                    widget.discription,
+                    widget.description,
                     style: TextStyle(fontSize: 12),
                   ),
                 ],
@@ -128,7 +131,7 @@ class _ItemInfoState extends State<ItemInfo> {
                     height: 100,
                     child: GoogleMap(
                       initialCameraPosition: CameraPosition(
-                        target: widget.postion,
+                        target: widget.position,
                         zoom: 15.0,
                       ),
                       markers: _markers,
@@ -223,29 +226,7 @@ class _ItemInfoState extends State<ItemInfo> {
           ),
         ],
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Search',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.add),
-            label: 'Add',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-          ),
-        ],
-        selectedItemColor: Colors.grey, // Customize the selected item color
-        unselectedItemColor: Colors.grey, // Customize the unselected item color
-        currentIndex: 0, // Set the current index as needed
-        onTap: (index) {
-          // Handle item taps here
-          // You can use the index to determine which icon was tapped
-        },
-      ),
+      bottomNavigationBar: BottomNavbar(),
     );
   }
 
