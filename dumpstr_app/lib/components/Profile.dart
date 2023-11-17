@@ -30,7 +30,8 @@ class _ProfilePageState extends State<ProfilePage> {
                 radius: 50,
                 backgroundImage: imageFile != null
                     ? FileImage(imageFile!) as ImageProvider
-                    : NetworkImage('https://via.placeholder.com/150/000000/FFFFFF/?text=Change+Picture'),
+                    : NetworkImage(
+                        'https://via.placeholder.com/150/000000/FFFFFF/?text=Change+Picture'),
                 backgroundColor: Colors.transparent,
               ),
             ),
@@ -47,7 +48,8 @@ class _ProfilePageState extends State<ProfilePage> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => PostClaimHistoryPage()),
+                  MaterialPageRoute(
+                      builder: (context) => PostClaimHistoryPage()),
                 );
               },
             ),
@@ -61,7 +63,6 @@ class _ProfilePageState extends State<ProfilePage> {
               },
             ),
           ],
-
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -73,12 +74,10 @@ class _ProfilePageState extends State<ProfilePage> {
 
           if (index == 0) {
             // Assuming 'Profile' is at index 2
-            Navigator.pushNamed(
-                context, '/home'); // Navigates to ProfilePage
+            Navigator.pushNamed(context, '/home'); // Navigates to ProfilePage
           } else if (index == 1) {
             // Assuming 'Profile' is at index 2
-            Navigator.pushNamed(
-                context, '/post'); // Navigates to ProfilePage
+            Navigator.pushNamed(context, '/post'); // Navigates to ProfilePage
           } else if (index == 2) {
             // Assuming 'Profile' is at index 2
             Navigator.pushNamed(
@@ -87,8 +86,8 @@ class _ProfilePageState extends State<ProfilePage> {
         },
         items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Search',
+            icon: Icon(Icons.home),
+            label: 'Home',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.add),
@@ -104,21 +103,24 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
     );
   }
+
   void _selectPicture(BuildContext context) async {
     final ImagePicker _picker = ImagePicker();
-    final XFile? pickedFile = await _picker.pickImage(source: ImageSource.gallery);
+    final XFile? pickedFile =
+        await _picker.pickImage(source: ImageSource.gallery);
 
     if (pickedFile != null) {
       // Confirmation dialog
-      _showConfirmationDialog(context, 'Are you sure you want to update your profile picture?', () {
+      _showConfirmationDialog(
+          context, 'Are you sure you want to update your profile picture?', () {
         setState(() {
           imageFile = File(pickedFile.path);
         });
         Navigator.of(context).pop(); // Close the dialog
       });
     }
-
   }
+
   void _showEditUsernameDialog(BuildContext context) {
     TextEditingController _usernameController = TextEditingController();
 
@@ -142,7 +144,9 @@ class _ProfilePageState extends State<ProfilePage> {
               child: Text('Update'),
               onPressed: () {
                 // Confirmation dialog
-                _showConfirmationDialog(context, 'Are you sure you want to update your username?', () {
+                _showConfirmationDialog(
+                    context, 'Are you sure you want to update your username?',
+                    () {
                   setState(() {
                     username = _usernameController.text;
                   });
@@ -150,7 +154,6 @@ class _ProfilePageState extends State<ProfilePage> {
                   Navigator.of(context).pop(); // Close the username dialog
                 });
               },
-
             ),
           ],
         );
@@ -158,7 +161,8 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  void _showConfirmationDialog(BuildContext context, String message, VoidCallback onConfirm) {
+  void _showConfirmationDialog(
+      BuildContext context, String message, VoidCallback onConfirm) {
     showDialog(
       context: context,
       builder: (BuildContext context) {

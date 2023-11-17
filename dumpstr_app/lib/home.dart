@@ -61,7 +61,7 @@ class AppState {
       "condition": "Used",
       "date": "2023-01-01",
       "coins": "+3",
-      "action": "post"
+      "action": "claim"
     },
     {
       "image":
@@ -115,6 +115,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
           title: const Text('Dumstr'),
+          automaticallyImplyLeading: true,
           centerTitle: true,
           leading: BackButton(
             onPressed: () {},

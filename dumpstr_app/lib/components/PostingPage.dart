@@ -277,8 +277,8 @@ class _PostingPageState extends State<PostingPage> {
         },
         items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Search',
+            icon: Icon(Icons.home),
+            label: 'Home',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.add),
