@@ -5,7 +5,7 @@
     "itemName": "Wooden Chair",
     "date": "2023-01-01",
     "coins": "+3",
-    "action": "post",
+    "action": "claim",
     "category": "Furniture",
     "distance": 0.2,
     "condition": "LN",

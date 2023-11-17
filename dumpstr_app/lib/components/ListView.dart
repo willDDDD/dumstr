@@ -1,121 +1,179 @@
 import 'package:flutter/material.dart';
-// import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:dumpstr_app/components/item_info.dart';
 
 class ListViewPage extends StatefulWidget {
-  // final Function(GoogleMapController controller) onMapCreated;
-  // final LatLng center;
   final String category;
   final String distance;
   final String condition;
 
   const ListViewPage({
-    super.key,
-    // required this.onMapCreated,
-    // required this.center,
+    Key? key,
     required this.category,
     required this.distance,
     required this.condition,
-  });
+  }) : super(key: key);
 
   @override
   _ListViewPageState createState() => _ListViewPageState();
 }
 
 class _ListViewPageState extends State<ListViewPage> {
-  // late GoogleMapController mapController;
-  // late Future<List<Marker>> markersFuture;
-  List<Map<String, dynamic>> listings = [
-    {
-      "image":
-          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRSYuGG_DIzEf9pdOFD6-nH_dqEonqz3CqhjWmEBdyhIQ&s",
-      "itemName": "Chair",
-      "description": "This is a chair",
-      "distance": "0 miles",
-      "category": "Furniture",
-      "condition": "Used",
-      "date": "2023-01-01",
-      "coins": "+3",
-      "action": "post"
-    },
-    {
-      "image":
-          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQZMZ8Du6xAnI7tAKeTVBhsiXxf1tjBTa1BqR_ICqt-iw&s",
-      "itemName": "Table",
-      "description": "This is a table",
-      "distance": "1 miles",
-      "category": "Furniture",
-      "condition": "",
-      "date": "2023-02-01",
-      "coins": "+1",
-      "action": "claim"
-    },
-    {
-      "image":
-          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQN0XwwnbTqbqzmMbTg8kxcEvIduHolhL0_z9dvYEaVKg&s",
-      "itemName": "Book",
-      "description": "This is a book",
-      "distance": "2 miles",
-      "category": "clothing",
-      "condition": "new",
-      "date": "2023-04-01",
-      "coins": "+1",
-      "action": "claim"
-    }
-  ];
+  late List<Map<String, dynamic>> listings = [];
 
   @override
   void initState() {
     super.initState();
-    // markersFuture = fetchMarkers();
+    loadListings();
+  }
+
+  Future<void> loadListings() async {
+    try {
+      String jsonData = await rootBundle.loadString('assets/data.json');
+      List<Map<String, dynamic>> jsonList =
+          List<Map<String, dynamic>>.from(json.decode(jsonData));
+
+      setState(() {
+        listings = jsonList
+            .where((json) =>
+                (widget.category == 'All' ||
+                    widget.category == json['category']) &&
+                (widget.distance == 'All' ||
+                    (json['distance'] != null &&
+                        json['distance'].toString().isNotEmpty &&
+                        json['distance'].toDouble() <=
+                            double.parse(widget.distance))) &&
+                (widget.condition == 'All' ||
+                    widget.condition == json['condition']))
+            .toList();
+      });
+    } catch (error) {
+      print('Error loading listings: $error');
+      // Handle error loading listings
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
+    if (listings == null) {
+      // Loading indicator or placeholder
+      return Center(
+        child: CircularProgressIndicator(),
+      );
+    }
+    return ListView.separated(
       itemCount: listings.length,
+      separatorBuilder: (context, index) => SizedBox(height: 10),
       itemBuilder: (context, index) {
         Map<String, dynamic> item = listings[index];
-
-        return Card(
-          child: Row(
-            children: [
-              Image.network(
-                item['image'],
-                width: 100,
-                height: 100,
-                fit: BoxFit.cover,
-              ),
-              SizedBox(width: 10),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      item['itemName'],
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
-                    ),
-                    SizedBox(height: 5),
-                    Text(
-                      item['description'],
-                      style: TextStyle(fontSize: 14),
-                    ),
-                  ],
-                ),
-              ),
-              SizedBox(width: 10),
-              ElevatedButton(
-                child: Text(item['action']),
-                onPressed: () {},
-              ),
-            ],
-          ),
-        );
+        return ItemCard(item: item, onClaimPressed: () => onClaimPressed(item));
       },
+    );
+  }
+
+  void onClaimPressed(Map<String, dynamic> item) {
+    if (item['action'] == 'claim') {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ItemInfo(
+            position: LatLng(
+                item['lat']?.toDouble() ?? 0.0, item['lng']?.toDouble() ?? 0.0),
+            itemAddress: item['itemAddress'] ?? '',
+            itemName: item['itemName'] ?? '',
+            description: item['description'] ?? '',
+            distance: item['distance'] ?? '',
+            category: item['category'] ?? '',
+            condition: item['condition'] ?? '',
+            hidden: item['hidden'] ?? false,
+            timeSincePosted: item['timeSincePosted'] ?? 0.0,
+            image: item['image'] ?? '',
+          ),
+        ),
+      );
+    } else {
+      // Handle other actions if needed
+    }
+  }
+}
+
+class ItemCard extends StatelessWidget {
+  final Map<String, dynamic> item;
+  final VoidCallback onClaimPressed;
+
+  const ItemCard({
+    Key? key,
+    required this.item,
+    required this.onClaimPressed,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: () => onCardPressed(context), // Navigate when the card is pressed
+      child: Card(
+        child: Row(
+          children: [
+            Image.asset(
+              item['image'] ?? '',
+              width: 100,
+              height: 100,
+              fit: BoxFit.cover,
+            ),
+            SizedBox(width: 10),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    item['itemName'] ?? '',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
+                  SizedBox(height: 5),
+                  Text(
+                    item['description'] ?? '',
+                    style: TextStyle(fontSize: 14),
+                  ),
+                  SizedBox(height: 5),
+                  Text(
+                    (item['distance']?.toString() ?? '') + " miles",
+                    style: TextStyle(fontSize: 14),
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void onCardPressed(BuildContext context) {
+    // Navigate to the listing page
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ItemInfo(
+          position: LatLng(
+            item['lat']?.toDouble() ?? 0.0,
+            item['lng']?.toDouble() ?? 0.0,
+          ),
+          itemAddress: item['itemAddress'] ?? '',
+          itemName: item['itemName'] ?? '',
+          description: item['description'] ?? '',
+          distance: item['distance'] ?? '',
+          category: item['category'] ?? '',
+          condition: item['condition'] ?? '',
+          hidden: item['hidden'] ?? false,
+          timeSincePosted: item['timeSincePosted'] ?? 0.0,
+          image: item['image'] ?? '',
+        ),
+      ),
     );
   }
 }
