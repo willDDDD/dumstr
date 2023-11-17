@@ -25,7 +25,7 @@ class PostClaimHistoryPage extends StatelessWidget {
                 itemBuilder: (context, index) {
                   var item = items[index];
                   return ListTile(
-                    leading: Image.network(item['image']),
+                    leading: Image.asset(item['image']),
                     title: Text(item['itemName']),
                     subtitle: Text('${item['action'].toString().toUpperCase()} on ${item['date']}'),
                     trailing: Text('${item['coins']} coins'),
