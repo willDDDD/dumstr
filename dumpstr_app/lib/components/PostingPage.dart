@@ -317,6 +317,29 @@ class PostingPageState extends State<PostingPage> {
                   ),
                 ),
                 Container(
+                  margin: EdgeInsets.fromLTRB(10, 5, 10, 10),
+                  width: double.infinity,
+                  child: Container(
+                    margin: EdgeInsets.symmetric(horizontal: 10),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: Color(0xFF618264),
+                        width: 2.0,
+                      ),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: TextField(
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: 'Enter Location',
+                        contentPadding: EdgeInsets.all(10),
+                        prefixIcon: Icon(Icons
+                            .add_location_outlined), // Use the prefixIcon property
+                      ),
+                    ),
+                  ),
+                ),
+                Container(
                   margin: EdgeInsets.only(left: 20.0, top: 5.0),
                   child: Align(
                     alignment: Alignment.topLeft,
@@ -399,8 +422,8 @@ class PostingPageState extends State<PostingPage> {
         },
         items: [
           BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Search',
+            icon: Icon(Icons.home),
+            label: 'Home',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.add),

@@ -7,7 +7,7 @@
     "coins": "+3",
     "action": "claim",
     "category": "Furniture",
-    "distance": 0.2,
+    "distance": 0.0,
     "condition": "LN",
     "hidden": false,
     "timeSincePosted": 0.0,
