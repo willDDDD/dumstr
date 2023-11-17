@@ -42,12 +42,10 @@ class _ItemInfoState extends State<ItemInfo> {
     _markers.add(
         Marker(markerId: MarkerId("item_location"), position: widget.position));
     return Scaffold(
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       appBar: AppBar(
           title: const Text("Item Info"),
           centerTitle: true,
-          leading: BackButton(
-            onPressed: () {},
-          ),
           actions: <Widget>[
             IconButton(
               icon: Icon(Icons.more_vert),
@@ -57,12 +55,8 @@ class _ItemInfoState extends State<ItemInfo> {
       body: ListView(
         children: <Widget>[
           Card(
-            margin: EdgeInsets.symmetric(horizontal: 30),
+            margin: EdgeInsets.symmetric(horizontal: 20),
             clipBehavior: Clip.antiAliasWithSaveLayer,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(
-                  12), // Adjust the value to change the curvature
-            ),
             child: Column(children: [
               Container(
                 child: Image.asset(
@@ -76,41 +70,74 @@ class _ItemInfoState extends State<ItemInfo> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(
-                    widget.itemName,
-                    style: const TextStyle(
-                      fontSize: 18,
-                    ),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          widget.itemName,
+                          style: const TextStyle(
+                            fontSize: 18,
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 80),
+                      if (widget.hidden) ...[
+                        const Icon(Icons.visibility_off),
+                        Countdown(
+                          seconds: hideTimer,
+                          build: (BuildContext context, double time) {
+                            final Duration duration =
+                                Duration(seconds: time.toInt());
+                            final int minutes = duration.inMinutes;
+                            final int seconds = (duration.inSeconds % 60);
+                            return Text(
+                              '${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}',
+                              style:
+                                  TextStyle(fontSize: 16, color: Colors.black),
+                            );
+                          },
+                          interval: Duration(seconds: 1),
+                          onFinished: () {
+                            setState(() {
+                              widget.hidden = false;
+                            });
+                          },
+                        ),
+                      ],
+                    ],
                   ),
+                  const SizedBox(height: 5),
                   Text(
-                    "${widget.category}, ${widget.condition}, Posted ${widget.timeSincePosted} hours ago",
-                    style: TextStyle(fontSize: 12),
+                    "Object Type: ${widget.category}, Condition: ${widget.condition}, Posted ${widget.timeSincePosted} hours ago",
+                    style: TextStyle(fontSize: 14),
                   ),
+                  const SizedBox(height: 10),
                   Text(
                     widget.description,
-                    style: TextStyle(fontSize: 12),
+                    style: TextStyle(fontSize: 14),
                   ),
+                  const SizedBox(height: 5),
                 ],
               ),
             ]),
           ),
           const SizedBox(height: 16),
           Card(
-            margin: EdgeInsets.symmetric(horizontal: 30),
+            margin: EdgeInsets.symmetric(horizontal: 20),
             clipBehavior: Clip.antiAliasWithSaveLayer,
             child: Column(children: [
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.only(left: 40.0),
-                    child: Text(
-                      "Location",
-                      style: TextStyle(
-                        fontSize: 18,
-                      ),
+                  // const Padding(
+                  //   padding: EdgeInsets.only(left: 25.0),
+                  Text(
+                    "Location",
+                    style: TextStyle(
+                      fontSize: 18,
                     ),
                   ),
+                  const SizedBox(height: 10),
                   Row(
                     children: [
                       const Icon(Icons.location_on),
@@ -128,7 +155,7 @@ class _ItemInfoState extends State<ItemInfo> {
                   ),
                   Container(
                     width: 400,
-                    height: 100,
+                    height: 250,
                     child: GoogleMap(
                       initialCameraPosition: CameraPosition(
                         target: widget.position,
@@ -150,83 +177,50 @@ class _ItemInfoState extends State<ItemInfo> {
           const SizedBox(
             height: 2,
           ),
-          Padding(
-            //hide button
-            padding: EdgeInsets.symmetric(horizontal: 30),
-            child: ElevatedButton(
-              onPressed: () {
-                if (!widget.hidden) {
-                  _showHideConfirmationDialog();
-                }
-              },
-              style: ElevatedButton.styleFrom(
-                  backgroundColor:
-                      widget.hidden ? Colors.purple : Colors.green),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(widget.hidden ? Icons.visibility_off : Icons.visibility,
-                      color: Colors.black),
-                  SizedBox(width: 8),
-                  Text(
-                    widget.hidden ? "Hidden" : "Hide item for 5 coins",
-                    style: TextStyle(color: Colors.black),
-                  ),
-                  if (widget.hidden) ...[
-                    SizedBox(width: 8),
-                    Countdown(
-                      seconds: hideTimer,
-                      build: (BuildContext context, double time) {
-                        final Duration duration =
-                            Duration(seconds: time.toInt());
-
-                        // Calculate the remaining minutes
-                        final int minutes = duration.inMinutes;
-                        final int seconds = (duration.inSeconds % 60);
-                        return Text(
-                          '${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}',
-                          style: TextStyle(fontSize: 12, color: Colors.black),
-                        );
-                      },
-                      interval: Duration(seconds: 1),
-                      onFinished: () {
-                        setState(() {
-                          widget.hidden = false;
-                        });
-                      },
-                    ),
-                  ],
-                ],
-              ),
-            ),
-          ),
-          const SizedBox(
-            height: 2,
-          ),
-          Padding(
-            //claim button
-            padding: EdgeInsets.symmetric(horizontal: 30),
-            child: ElevatedButton(
-              onPressed: () {
-                // Add your logic for the button here
-              },
-              style: ElevatedButton.styleFrom(backgroundColor: Colors.grey),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.lock, color: Colors.black),
-                  SizedBox(width: 8),
-                  Text(
-                    "Claim",
-                    style: TextStyle(color: Colors.black),
-                  ),
-                ],
-              ),
-            ),
-          ),
         ],
       ),
-      bottomNavigationBar: BottomNavbar(),
+      floatingActionButton: Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          SizedBox(width: 20),
+          Expanded(
+            child: FloatingActionButton.extended(
+              onPressed: () {
+                if (widget.distance == 0) {
+                  _showClaimConfirmationDialog();
+                } else {
+                  _showClaimRejectDialog();
+                }
+              },
+              backgroundColor:
+                  (widget.distance == 0) ? Colors.green : Colors.grey,
+              icon: (widget.distance == 0)
+                  ? null
+                  : Icon(Icons.lock, color: Colors.black),
+              label: Text(
+                "Claim",
+                style: TextStyle(color: Colors.black),
+              ),
+            ),
+          ),
+          SizedBox(width: 10), // Adjust the space between buttons
+          FloatingActionButton.extended(
+            onPressed: () {
+              if (!widget.hidden) {
+                _showHideConfirmationDialog();
+              }
+            },
+            backgroundColor: widget.hidden ? Colors.purple : Colors.green,
+            icon: Icon(widget.hidden ? Icons.visibility_off : Icons.visibility,
+                color: Colors.black),
+            label: Text(
+              widget.hidden ? "Hidden" : "Hide",
+              style: TextStyle(color: Colors.black),
+            ),
+          ),
+          SizedBox(width: 16),
+        ],
+      ),
     );
   }
 
@@ -235,24 +229,95 @@ class _ItemInfoState extends State<ItemInfo> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Hide Item"),
-          content: Text("Use 5 coins to hide this item for the next 1 hour."),
+          title: const Text("Hide this Item"),
+          content:
+              const Text("Use 5 coins to hide this item for the next 1 hour."),
           actions: <Widget>[
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop(); // Close the dialog on cancel
               },
-              child: Text("Cancel"),
+              child: const Text("Cancel"),
             ),
             ElevatedButton(
               onPressed: () {
-                // Add logic to deduct 5 coins and hide the item
+                //Hide item
                 setState(() {
                   widget.hidden = true;
                 });
                 Navigator.of(context).pop();
+                _showHideCompleteDialog();
               },
-              child: Text("Confirm"),
+              child: const Text("Confirm"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _showClaimConfirmationDialog() async {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Claim this Item"),
+          content: const Text(
+              "You are at the item location and have decided to take this item."),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: const Text("Cancel"),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                //Remove Item
+                Navigator.of(context).pop();
+              },
+              child: const Text("Confirm"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _showClaimRejectDialog() async {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          content: const Text(
+              "Items can only be claimed when users are at their location."),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog on cancel
+              },
+              child: const Text("Close"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  Future<void> _showHideCompleteDialog() async {
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Icon(Icons.visibility_off),
+          content: const Text(
+              "This item has been hidden from other users map and list view for the next hour. This does not guarantee you will get this iteam or give you any claim to it."),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog on cancel
+              },
+              child: const Text("Close"),
             ),
           ],
         );
