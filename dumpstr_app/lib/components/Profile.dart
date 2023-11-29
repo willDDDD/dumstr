@@ -18,9 +18,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     int userCoins = 25;
     return Scaffold(
-      // appBar: AppBar(
-      //   title: Text("Hello, $username - Profile page"),
-      // ),
+   
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -62,7 +60,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 _showEditUsernameDialog(context);
               },
               style: ElevatedButton.styleFrom(
-                primary: Colors.green,
+                primary:  Color(0xFF79AC78),
                 onPrimary: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30),
@@ -89,7 +87,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 );
               },
               style: ElevatedButton.styleFrom(
-                primary: Colors.green,
+                primary: Color(0xFF79AC78),
                 onPrimary: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30),
@@ -107,7 +105,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 );
               },
               style: ElevatedButton.styleFrom(
-                primary: Colors.green,
+                primary:  Color(0xFF79AC78),
                 onPrimary: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30),
