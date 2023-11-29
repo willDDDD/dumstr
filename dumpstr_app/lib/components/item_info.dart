@@ -134,8 +134,10 @@ class _ItemInfoState extends State<ItemInfo> {
             ),
           ),
           const SizedBox(height: 16),
-          Card(
-            margin: EdgeInsets.symmetric(horizontal: 20),
+          Padding (
+            padding:  EdgeInsets.fromLTRB(0, 10, 0, 100),
+          child :Card(
+            // margin: EdgeInsets.symmetric(horizontal: 20),
             clipBehavior: Clip.antiAliasWithSaveLayer,
             child: Column(children: [
               Column(
@@ -185,7 +187,7 @@ class _ItemInfoState extends State<ItemInfo> {
                 ],
               ),
             ]),
-          ),
+          ), ),
           const SizedBox(
             height: 2,
           ),
@@ -205,7 +207,7 @@ class _ItemInfoState extends State<ItemInfo> {
                 }
               },
               backgroundColor:
-                  (widget.distance == 0) ? Colors.green : Colors.grey,
+                  (widget.distance == 0) ? Color(0xFF618264) : Colors.grey,
               icon: (widget.distance == 0)
                   ? null
                   : Icon(Icons.lock, color: Colors.black),
@@ -222,7 +224,7 @@ class _ItemInfoState extends State<ItemInfo> {
                 _showHideConfirmationDialog();
               }
             },
-            backgroundColor: widget.hidden ? Colors.purple : Colors.green,
+            backgroundColor: widget.hidden ? Colors.grey : Color(0xFF618264),
             icon: Icon(widget.hidden ? Icons.visibility_off : Icons.visibility,
                 color: Colors.black),
             label: Text(
