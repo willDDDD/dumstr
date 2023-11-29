@@ -180,7 +180,7 @@ class PostingPageState extends State<PostingPage> {
                       // ),
                       BackButton(
                         onPressed: () {
-                          Navigator.pushNamed(context, '/home'); 
+                          Navigator.pushNamed(context, '/home');
                         },
                       ),
                       SizedBox(
@@ -405,42 +405,6 @@ class PostingPageState extends State<PostingPage> {
             ),
           ),
         ),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: (int index) {
-          setState(() {
-            _currentIndex = index;
-          });
-
-          if (index == 0) {
-            // Assuming 'Profile' is at index 2
-            Navigator.pushNamed(context, '/home'); // Navigates to ProfilePage
-          } else if (index == 1) {
-            // Assuming 'Profile' is at index 2
-            Navigator.pushNamed(context, '/post'); // Navigates to ProfilePage
-          } else if (index == 2) {
-            // Assuming 'Profile' is at index 2
-            Navigator.pushNamed(
-                context, '/profile'); // Navigates to ProfilePage
-          }
-        },
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.add),
-            label: 'Add',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-          ),
-        ],
-        selectedItemColor: Colors.grey, // Customize the selected item color
-        unselectedItemColor: Colors.grey, // Customize the unselected item color
       ),
     );
   }
