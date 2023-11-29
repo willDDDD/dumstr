@@ -27,7 +27,7 @@ class _ProfilePageState extends State<ProfilePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             Stack(
-              alignment: Alignment.bottomRight,
+              alignment: Alignment.bottomCenter,
               children: [
                 GestureDetector(
                   onTap: () => _selectPicture(context),
