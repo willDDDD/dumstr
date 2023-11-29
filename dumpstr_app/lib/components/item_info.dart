@@ -44,7 +44,7 @@ class _ItemInfoState extends State<ItemInfo> {
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       appBar: AppBar(
-          title: const Text("Item Info"),
+          title: const Text("Dumstr"),
           centerTitle: true,
           actions: <Widget>[
             IconButton(
@@ -54,72 +54,84 @@ class _ItemInfoState extends State<ItemInfo> {
           ]),
       body: ListView(
         children: <Widget>[
-          Card(
-            margin: EdgeInsets.symmetric(horizontal: 20),
-            clipBehavior: Clip.antiAliasWithSaveLayer,
-            child: Column(children: [
-              Container(
-                child: Image.asset(
-                  widget.image,
-                  height: 300,
-                  width: 400,
-                  fit: BoxFit.cover,
+          Padding(
+            padding: EdgeInsets.fromLTRB(0, 10, 0, 20),
+            child: Card(
+              margin: EdgeInsets.symmetric(horizontal: 0),
+              clipBehavior: Clip.antiAliasWithSaveLayer,
+              child: Column(children: [
+                Container(
+                  child: Image.asset(
+                    widget.image,
+                    height: 300,
+                    width: 400,
+                    fit: BoxFit.cover,
+                  ),
                 ),
-              ),
-              const SizedBox(height: 16),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      Expanded(
-                        child: Text(
-                          widget.itemName,
-                          style: const TextStyle(
-                            fontSize: 18,
+                const SizedBox(height: 16),
+                Padding (
+                  padding: EdgeInsets.only(left: 15),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Expanded(
+                          // child: Padding (
+                          //   padding:  EdgeInsets.only(left: 10), 
+                          child: Text(
+                            widget.itemName,
+                            style: const TextStyle(
+                              fontSize: 25,
+                            ),
                           ),
+                        // ),
+                        
                         ),
-                      ),
-                      SizedBox(width: 80),
-                      if (widget.hidden) ...[
-                        const Icon(Icons.visibility_off),
-                        Countdown(
-                          seconds: hideTimer,
-                          build: (BuildContext context, double time) {
-                            final Duration duration =
-                                Duration(seconds: time.toInt());
-                            final int minutes = duration.inMinutes;
-                            final int seconds = (duration.inSeconds % 60);
-                            return Text(
-                              '${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}',
-                              style:
-                                  TextStyle(fontSize: 16, color: Colors.black),
-                            );
-                          },
-                          interval: Duration(seconds: 1),
-                          onFinished: () {
-                            setState(() {
-                              widget.hidden = false;
-                            });
-                          },
-                        ),
+                        SizedBox(width: 80),
+                        if (widget.hidden) ...[
+                          const Icon(Icons.visibility_off),
+                          Countdown(
+                            seconds: hideTimer,
+                            build: (BuildContext context, double time) {
+                              final Duration duration =
+                                  Duration(seconds: time.toInt());
+                              final int minutes = duration.inMinutes;
+                              final int seconds = (duration.inSeconds % 60);
+                              return Text(
+                                '${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}',
+                                style: TextStyle(
+                                    fontSize: 20, color: Colors.black),
+                              );
+                            },
+                            interval: Duration(seconds: 1),
+                            onFinished: () {
+                              setState(() {
+                                widget.hidden = false;
+                              });
+                            },
+                          ),
+                        ],
                       ],
-                    ],
-                  ),
-                  const SizedBox(height: 5),
-                  Text(
-                    "Object Type: ${widget.category}, Condition: ${widget.condition}, Posted ${widget.timeSincePosted} hours ago",
-                    style: TextStyle(fontSize: 14),
-                  ),
-                  const SizedBox(height: 10),
-                  Text(
-                    widget.description,
-                    style: TextStyle(fontSize: 14),
-                  ),
-                  const SizedBox(height: 5),
-                ],
-              ),
-            ]),
+                    ),
+                    const SizedBox(height: 5),
+                    Text("Posted ${widget.timeSincePosted} hours ago"),
+                    Text(
+                      "Category: ${widget.category}",
+                      style: TextStyle(fontSize: 14),
+                    ),
+                    
+                    Text ("Condition: ${widget.condition}"),
+                    const SizedBox(height: 10),
+                    Text(
+                      widget.description,
+                      style: TextStyle(fontSize: 14),
+                    ),
+                    const SizedBox(height: 5),
+                  ],
+                ), ),
+              ]),
+            ),
           ),
           const SizedBox(height: 16),
           Card(

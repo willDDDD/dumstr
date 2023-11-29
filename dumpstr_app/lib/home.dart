@@ -117,6 +117,7 @@ class _HomePageState extends State<HomePage> {
           title: const Text('Dumstr'),
           automaticallyImplyLeading: true,
           centerTitle: true,
+          // elevation: 0.0,
           // leading: BackButton(
           //   onPressed: () {},
           // ),
