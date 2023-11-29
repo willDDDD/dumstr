@@ -16,33 +16,68 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    int userCoins = 25;
     return Scaffold(
       appBar: AppBar(
         title: Text("Hello, $username - Profile page"),
       ),
+
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            GestureDetector(
-              onTap: () => _selectPicture(context),
-              child: CircleAvatar(
-                radius: 50,
-                backgroundImage: imageFile != null
-                    ? FileImage(imageFile!) as ImageProvider
-                    : NetworkImage(
+            Stack(
+              alignment: Alignment.bottomRight,
+              children: [
+                GestureDetector(
+                  onTap: () => _selectPicture(context),
+                  child: CircleAvatar(
+                    radius: 70,
+                    backgroundImage: imageFile != null
+                        ? FileImage(imageFile!) as ImageProvider
+                        : NetworkImage(
                         'https://via.placeholder.com/150/000000/FFFFFF/?text=Change+Picture'),
-                backgroundColor: Colors.transparent,
-              ),
+                    backgroundColor: Colors.transparent,
+                  ),
+                ),
+                IconButton(
+                  icon: Icon(Icons.edit, color: Colors.white),
+                  onPressed: () => _selectPicture(context),
+                ),
+              ],
             ),
-            SizedBox(height: 8),
-            Text(username),
+            SizedBox(height: 16), // Space between picture and coin count
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(Icons.monetization_on, color: Colors.yellow),
+                SizedBox(width: 8), // Space between icon and text
+                Text("$userCoins coins", style: TextStyle(fontSize: 20)),
+              ],
+            ),
+            SizedBox(height: 16), // Space between coin count and edit username button
             ElevatedButton(
-              child: Text('Edit Username'),
               onPressed: () {
                 _showEditUsernameDialog(context);
               },
+              style: ElevatedButton.styleFrom(
+                primary: Colors.green,
+                onPrimary: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                minimumSize: Size(200, 40),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Text("Edit Username"),
+                  SizedBox(width: 8),
+                  Icon(Icons.edit, size: 20),
+                ],
+              ),
             ),
+            SizedBox(height: 8),
             ElevatedButton(
               child: Text('Post/Claim Item History'),
               onPressed: () {
@@ -52,7 +87,16 @@ class _ProfilePageState extends State<ProfilePage> {
                       builder: (context) => PostClaimHistoryPage()),
                 );
               },
+              style: ElevatedButton.styleFrom(
+                primary: Colors.green,
+                onPrimary: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                minimumSize: Size(200, 40),
+              ),
             ),
+            SizedBox(height: 8),
             ElevatedButton(
               child: Text('Coin System Declaration'),
               onPressed: () {
@@ -61,6 +105,14 @@ class _ProfilePageState extends State<ProfilePage> {
                   MaterialPageRoute(builder: (context) => CoinSystemHelpPage()),
                 );
               },
+              style: ElevatedButton.styleFrom(
+                primary: Colors.green,
+                onPrimary: Colors.white,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                minimumSize: Size(200, 40),
+              ),
             ),
           ],
         ),
