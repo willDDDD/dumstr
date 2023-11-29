@@ -19,7 +19,7 @@ class _ProfilePageState extends State<ProfilePage> {
     int userCoins = 25;
     return Scaffold(
       appBar: AppBar(
-        title: Text("Profile page"),
+        title: Text("Hello, $username - Profile page"),
       ),
       body: Center(
         child: Column(
