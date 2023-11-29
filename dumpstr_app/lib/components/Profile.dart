@@ -18,10 +18,9 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     int userCoins = 25;
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Profile page"),
-      ),
-
+      // appBar: AppBar(
+      //   title: Text("Hello, $username - Profile page"),
+      // ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
