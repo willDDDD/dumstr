@@ -21,7 +21,6 @@ class _ProfilePageState extends State<ProfilePage> {
       appBar: AppBar(
         title: Text("Profile page"),
       ),
-
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -36,7 +35,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     backgroundImage: imageFile != null
                         ? FileImage(imageFile!) as ImageProvider
                         : NetworkImage(
-                        'https://via.placeholder.com/150/000000/FFFFFF/?text=Change+Picture'),
+                            'https://via.placeholder.com/150/000000/FFFFFF/?text=Change+Picture'),
                     backgroundColor: Colors.transparent,
                   ),
                 ),
@@ -47,7 +46,8 @@ class _ProfilePageState extends State<ProfilePage> {
               ],
             ),
             SizedBox(height: 16),
-            Text("Hello, $username", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+            Text("Hello, $username",
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
             SizedBox(height: 16),
             Row(
               mainAxisSize: MainAxisSize.min,
@@ -57,13 +57,15 @@ class _ProfilePageState extends State<ProfilePage> {
                 Text("$userCoins coins", style: TextStyle(fontSize: 20)),
               ],
             ),
-            SizedBox(height: 16), // Space between coin count and edit username button
+            SizedBox(
+                height:
+                    16), // Space between coin count and edit username button
             ElevatedButton(
               onPressed: () {
                 _showEditUsernameDialog(context);
               },
               style: ElevatedButton.styleFrom(
-                primary: Colors.green,
+                primary: Color(0xFF79AC78),
                 onPrimary: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30),
@@ -90,7 +92,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 );
               },
               style: ElevatedButton.styleFrom(
-                primary: Colors.green,
+                primary: Color(0xFF79AC78),
                 onPrimary: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30),
@@ -108,7 +110,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 );
               },
               style: ElevatedButton.styleFrom(
-                primary: Colors.green,
+                primary: Color(0xFF79AC78),
                 onPrimary: Colors.white,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30),

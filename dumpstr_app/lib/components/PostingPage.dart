@@ -170,15 +170,18 @@ class PostingPageState extends State<PostingPage> {
                   margin: EdgeInsets.only(left: 20.0, top: 5.0),
                   child: Row(
                     children: [
-                      TextButton.icon(
+                      // TextButton.icon(
+                      //   onPressed: () {},
+                      //   icon: const Icon(
+                      //     Icons.close_rounded,
+                      //     color: Colors.black,
+                      //   ),
+                      //   label: Text(''),
+                      // ),
+                      BackButton(
                         onPressed: () {
-                          Navigator.pop(context);
+                          Navigator.pushNamed(context, '/home'); 
                         },
-                        icon: const Icon(
-                          Icons.close_rounded,
-                          color: Colors.black,
-                        ),
-                        label: Text(''),
                       ),
                       SizedBox(
                         width: 8,
