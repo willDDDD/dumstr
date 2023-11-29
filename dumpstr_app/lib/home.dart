@@ -117,15 +117,16 @@ class _HomePageState extends State<HomePage> {
           title: const Text('Dumstr'),
           automaticallyImplyLeading: true,
           centerTitle: true,
-          leading: BackButton(
-            onPressed: () {},
+          // leading: BackButton(
+          //   onPressed: () {},
+          // ),
+          // actions: <Widget>[
+          //   IconButton(
+          //     icon: Icon(Icons.more_vert),
+          //     onPressed: () {},
+          //   ),
+          // ]
           ),
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.more_vert),
-              onPressed: () {},
-            ),
-          ]),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,

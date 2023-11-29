@@ -4,6 +4,8 @@ import 'dart:convert';
 import 'package:flutter/services.dart' show rootBundle;
 import 'dart:math';
 import 'package:dumpstr_app/components/item_info.dart';
+import 'dart:ui' as ui;
+import 'dart:typed_data';
 
 class CustomMarker {
   final String id;
@@ -31,6 +33,13 @@ class CustomMarker {
     required this.hidden,
     required this.timeSincePosted,
   });
+}
+
+Future<Uint8List> getBytesFromAsset(String path, int width) async {
+  ByteData data = await rootBundle.load(path);
+  ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(), targetWidth: width);
+  ui.FrameInfo fi = await codec.getNextFrame();
+  return (await fi.image.toByteData(format: ui.ImageByteFormat.png))!.buffer.asUint8List();
 }
 
 class MapView extends StatefulWidget {
@@ -104,16 +113,19 @@ class _MapViewState extends State<MapView> {
     List<Marker> markers = [];
 
     for (var customMarker in customMarkers) {
-      final imgIcon = await BitmapDescriptor.fromAssetImage(
-        const ImageConfiguration(size: Size(48, 48)),
-        customMarker.image,
-      );
+      // final imgIcon = await BitmapDescriptor.fromAssetImage(
+      //   const ImageConfiguration(size: Size(20, 20)),
+      //   customMarker.image,
+      // );
+
+      final Uint8List markerIcon = await getBytesFromAsset(customMarker.image, 50);
 
       markers.add(
         Marker(
           markerId: MarkerId(customMarker.id),
           position: customMarker.position,
-          icon: imgIcon,
+          // icon: imgIcon,
+          icon: BitmapDescriptor.fromBytes(markerIcon),
           infoWindow: InfoWindow(
             title: customMarker.itemName,
             snippet: customMarker.itemDescription,

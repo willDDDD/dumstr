@@ -171,7 +171,9 @@ class PostingPageState extends State<PostingPage> {
                   child: Row(
                     children: [
                       TextButton.icon(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
                         icon: const Icon(
                           Icons.close_rounded,
                           color: Colors.black,
@@ -353,7 +355,7 @@ class PostingPageState extends State<PostingPage> {
                 ),
                 SizedBox(
                   width: 350,
-                  height: 200,
+                  height: 175,
                   child: Container(
                     margin: EdgeInsets.only(bottom: 8.0),
                     decoration: BoxDecoration(

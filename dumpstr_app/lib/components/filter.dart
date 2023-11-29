@@ -8,7 +8,7 @@ class FilterValues {
 
 List<DropdownMenuItem<String>> get categoryDropdownItems {
   List<DropdownMenuItem<String>> categoryItems = [
-    const DropdownMenuItem(value: "All", child: Text("All")),
+    const DropdownMenuItem(value: "All", child: Text("Category")),
     const DropdownMenuItem(value: "Furniture", child: Text("Furniture")),
     const DropdownMenuItem(value: "Electronics", child: Text("Electronics")),
     const DropdownMenuItem(value: "Clothes", child: Text("Clothes")),
@@ -19,7 +19,7 @@ List<DropdownMenuItem<String>> get categoryDropdownItems {
 
 List<DropdownMenuItem<String>> get distanceDropdownItems {
   List<DropdownMenuItem<String>> distanceItems = [
-    const DropdownMenuItem(value: "All", child: Text("All")),
+    const DropdownMenuItem(value: "All", child: Text("Distance")),
     const DropdownMenuItem(value: "0.25", child: Text("0.25 mi")),
     const DropdownMenuItem(value: "0.5", child: Text("0.5 mi")),
     const DropdownMenuItem(value: "1", child: Text("1 mi")),
@@ -30,10 +30,11 @@ List<DropdownMenuItem<String>> get distanceDropdownItems {
 
 List<DropdownMenuItem<String>> get conditionDropdownItems {
   List<DropdownMenuItem<String>> conditionItems = [
-    const DropdownMenuItem(value: "All", child: Text("All")),
-    const DropdownMenuItem(value: "LN", child: Text("Like new")),
-    const DropdownMenuItem(value: "SU", child: Text("Slightly used")),
-    const DropdownMenuItem(value: "WW", child: Text("Well worn")),
+    const DropdownMenuItem(value: "All", child: Text("Condition")),
+    const DropdownMenuItem(value: "F", child: Text("Fair")),
+    const DropdownMenuItem(value: "G", child: Text("Good")),
+    const DropdownMenuItem(value: "E", child: Text("Excellent")),
+    const DropdownMenuItem(value: "N", child: Text("New")),
   ];
   return conditionItems;
 }
