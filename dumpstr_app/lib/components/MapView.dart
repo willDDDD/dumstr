@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:geolocator/geolocator.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart' show rootBundle;
 import 'dart:math';
 import 'package:dumpstr_app/components/item_info.dart';
 import 'dart:ui' as ui;
 import 'dart:typed_data';
+import 'package:location/location.dart';
 
 class CustomMarker {
   final String id;
@@ -37,9 +39,12 @@ class CustomMarker {
 
 Future<Uint8List> getBytesFromAsset(String path, int width) async {
   ByteData data = await rootBundle.load(path);
-  ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(), targetWidth: width);
+  ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(),
+      targetWidth: width);
   ui.FrameInfo fi = await codec.getNextFrame();
-  return (await fi.image.toByteData(format: ui.ImageByteFormat.png))!.buffer.asUint8List();
+  return (await fi.image.toByteData(format: ui.ImageByteFormat.png))!
+      .buffer
+      .asUint8List();
 }
 
 class MapView extends StatefulWidget {
@@ -66,10 +71,28 @@ class _MapViewState extends State<MapView> {
   late GoogleMapController mapController;
   late Future<List<Marker>> markersFuture;
 
+  // LatLng? _currentPosition;
+  // bool _isLoading = true;
+  // Location _location = Location();
+
+  // void _onMapCreated(GoogleMapController _cntlr)
+  // {
+  //   mapController = _cntlr;
+  //   _location.onLocationChanged.listen((l) {
+  //     mapController.animateCamera(
+  //       CameraUpdate.newCameraPosition(
+  //         CameraPosition(target: LatLng(l.latitude!, l.longitude!),zoom: 15),
+  //         ),
+  //     );
+  //   });
+  // }
+
   @override
   void initState() {
+    // _getLocation();
     super.initState();
     markersFuture = fetchMarkers();
+    // getLocation();
   }
 
   Future<List<Marker>> fetchMarkers() async {
@@ -112,13 +135,21 @@ class _MapViewState extends State<MapView> {
       List<CustomMarker> customMarkers) async {
     List<Marker> markers = [];
 
+    Marker currentLoc = Marker(
+        markerId: MarkerId('current_location'),
+        position: widget.center,
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue));
+
+    markers.add(currentLoc);
+
     for (var customMarker in customMarkers) {
       // final imgIcon = await BitmapDescriptor.fromAssetImage(
       //   const ImageConfiguration(size: Size(20, 20)),
       //   customMarker.image,
       // );
 
-      final Uint8List markerIcon = await getBytesFromAsset(customMarker.image, 50);
+      final Uint8List markerIcon =
+          await getBytesFromAsset(customMarker.image, 100);
 
       markers.add(
         Marker(
@@ -190,6 +221,7 @@ class _MapViewState extends State<MapView> {
                     zoom: 15.0,
                   ),
                   markers: Set<Marker>.from(snapshot.data!),
+                  myLocationEnabled: true,
                 ),
               ),
             ),
