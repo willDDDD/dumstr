@@ -109,7 +109,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    const LatLng center = const LatLng(40.11049763915532, -88.22830990000001);
+    const LatLng center = const LatLng(40.109863299724395, -88.22830222517452);
     GoogleMapController mapController;
 
     return Scaffold(
