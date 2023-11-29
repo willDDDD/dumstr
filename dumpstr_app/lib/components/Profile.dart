@@ -19,7 +19,7 @@ class _ProfilePageState extends State<ProfilePage> {
     int userCoins = 25;
     return Scaffold(
       appBar: AppBar(
-        title: Text("Hello, $username - Profile page"),
+        title: Text("Profile page"),
       ),
 
       body: Center(
@@ -46,7 +46,9 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ],
             ),
-            SizedBox(height: 16), // Space between picture and coin count
+            SizedBox(height: 16),
+            Text("Hello, $username", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+            SizedBox(height: 16),
             Row(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -71,9 +73,9 @@ class _ProfilePageState extends State<ProfilePage> {
               child: Row(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[
-                  Text("Edit Username"),
+                  Icon(Icons.settings, size: 20),
                   SizedBox(width: 8),
-                  Icon(Icons.edit, size: 20),
+                  Text("Username Setting"),
                 ],
               ),
             ),
