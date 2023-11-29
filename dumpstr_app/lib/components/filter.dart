@@ -59,6 +59,7 @@ class _FilterState extends State<Filter> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
       children: [
+        const Icon(Icons.list),
         DropdownButton(
           value: category,
           items: categoryDropdownItems,
