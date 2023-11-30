@@ -138,7 +138,7 @@ class _HomePageState extends State<HomePage> {
               ],
               bottom: const TabBar(
                   indicatorColor: Color(0xFF618264),
-                  labelStyle: TextStyle(fontSize: 20),
+                  labelStyle: TextStyle(fontSize: 20, fontFamily: 'Baloo'),
                   tabs: <Widget>[
                     Tab(
                       // icon: const Icon(Icons.list),
