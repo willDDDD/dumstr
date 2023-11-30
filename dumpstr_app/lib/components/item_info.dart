@@ -44,14 +44,21 @@ class _ItemInfoState extends State<ItemInfo> {
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       appBar: AppBar(
-          title: const Text("Item Info"),
-          centerTitle: true,
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.more_vert),
-              onPressed: () {},
-            ),
-          ]),
+        title: const Text("Item Info"),
+        centerTitle: true,
+        actions: <Widget>[
+          // Add coins display here
+          Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(Icons.monetization_on, color: Colors.yellow), // Coin icon
+              SizedBox(width: 5), // Spacing between icon and text
+              Text('25'), // Display the coin amount
+              SizedBox(width: 20), // Spacing before the next icon
+            ],
+          ),
+        ],
+      ),
       body: ListView(
         children: <Widget>[
           Card(
