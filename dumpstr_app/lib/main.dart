@@ -43,7 +43,7 @@ class MyApp extends StatelessWidget {
           titleTextStyle: TextStyle(
             color: Color(
                 0xFF618264), // Change this color to the desired color for the title
-            fontSize: 25, // You can adjust the font size as needed
+            fontSize: 30, // You can adjust the font size as needed
             fontWeight: FontWeight.bold, // You can set the font weight
           ),
         ),
