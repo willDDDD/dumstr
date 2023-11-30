@@ -116,7 +116,12 @@ class _HomePageState extends State<HomePage> {
         length: 2,
         child: Scaffold(
           appBar: AppBar(
-              title: const Text('Dumstr'),
+              title: Text(
+                "Dumstr",
+                style: TextStyle(
+                  fontSize: 30,
+                ),
+              ),
               automaticallyImplyLeading: false,
               centerTitle: true,
               actions: <Widget>[
