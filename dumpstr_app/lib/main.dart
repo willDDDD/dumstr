@@ -7,7 +7,7 @@ import 'package:dumpstr_app/components/coin_system_help_page.dart';
 import 'package:dumpstr_app/components/post_claim_history_page.dart';
 import 'package:dumpstr_app/components/item_info.dart';
 import 'package:dumpstr_app/components/Profile.dart';
-
+import 'package:dumpstr_app/components/login.dart';
 void main() {
   runApp(MyApp());
 }
@@ -43,12 +43,12 @@ class MyApp extends StatelessWidget {
           titleTextStyle: TextStyle(
             color: Color(
                 0xFF618264), // Change this color to the desired color for the title
-            fontSize: 30, // You can adjust the font size as needed
+            fontSize: 25, // You can adjust the font size as needed
             fontWeight: FontWeight.bold, // You can set the font weight
           ),
         ),
       ),
-      home: HomePage(),
+      home: LoginPage(),
       routes: {
         '/home': (context) => HomePage(),
         '/post': (context) => PostingPage(),
