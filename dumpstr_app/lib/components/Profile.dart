@@ -19,12 +19,7 @@ class _ProfilePageState extends State<ProfilePage> {
     int userCoins = 25;
     return Scaffold(
       appBar: AppBar(
-          title: Text(
-            "Profile Page",
-            style: TextStyle(
-              fontSize: 25,
-            ),
-          ),
+          title: Text("Profile Page"),
           automaticallyImplyLeading: false,
           centerTitle: true),
       body: Center(
