@@ -37,6 +37,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Dumstr',
       theme: ThemeData(
+        fontFamily: 'Baloo',
         primarySwatch: customColor,
         visualDensity: VisualDensity.adaptivePlatformDensity,
         appBarTheme: AppBarTheme(
@@ -45,6 +46,7 @@ class MyApp extends StatelessWidget {
                 0xFF618264), // Change this color to the desired color for the title
             fontSize: 30, // You can adjust the font size as needed
             fontWeight: FontWeight.bold, // You can set the font weight
+            fontFamily: 'Baloo',
           ),
         ),
       ),
