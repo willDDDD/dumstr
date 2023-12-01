@@ -1,7 +1,7 @@
 [
   {
     "id": 0,
-    "image": "assets/chair.png",
+    "image": "assets/chair_2.jpg",
     "itemName": "Wooden Chair",
     "date": "2023-01-01",
     "coins": "+3",
@@ -18,7 +18,7 @@
   },
   {
     "id": 1,
-    "image": "assets/chair2.png",
+    "image": "assets/officechair.jpg",
     "itemName": "Office Chair",
     "date": "2023-02-01",
     "coins": "+1",
@@ -35,7 +35,7 @@
   },
   {
     "id": 2,
-    "image": "assets/desk.png",
+    "image": "assets/desk.jpg",
     "itemName": "Desk",
     "date": "2023-04-01",
     "coins": "+1",
@@ -52,7 +52,7 @@
   },
   {
     "id": 3,
-    "image": "assets/lawnmower.png",
+    "image": "assets/lawnmower.jpg",
     "itemName": "Lawnmower",
     "date": "2023-04-01",
     "coins": "+1",
