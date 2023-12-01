@@ -108,7 +108,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    const LatLng center = const LatLng(40.11049763915532, -88.22830990000001);
+    const LatLng center = const LatLng(40.10988245374881, -88.22832482288152);
     GoogleMapController mapController;
 
     return DefaultTabController(
