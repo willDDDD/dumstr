@@ -31,10 +31,11 @@ List<DropdownMenuItem<String>> get distanceDropdownItems {
 List<DropdownMenuItem<String>> get conditionDropdownItems {
   List<DropdownMenuItem<String>> conditionItems = [
     const DropdownMenuItem(value: "All", child: Text("Condition")),
-    const DropdownMenuItem(value: "F", child: Text("Fair")),
-    const DropdownMenuItem(value: "G", child: Text("Good")),
-    const DropdownMenuItem(value: "E", child: Text("Excellent")),
-    const DropdownMenuItem(value: "N", child: Text("New")),
+    const DropdownMenuItem(value: "Poor", child: Text("Poor")),
+    const DropdownMenuItem(value: "Fair", child: Text("Fair")),
+    const DropdownMenuItem(value: "Good", child: Text("Good")),
+    const DropdownMenuItem(value: "Excellent", child: Text("Excellent")),
+    const DropdownMenuItem(value: "New", child: Text("New")),
   ];
   return conditionItems;
 }

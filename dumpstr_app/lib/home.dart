@@ -116,12 +116,29 @@ class _HomePageState extends State<HomePage> {
         length: 2,
         child: Scaffold(
           appBar: AppBar(
-              title: const Text('Dumstr'),
+              title: Text(
+                "Dumstr",
+                style: TextStyle(
+                  fontSize: 30,
+                ),
+              ),
               automaticallyImplyLeading: false,
               centerTitle: true,
+              actions: <Widget>[
+                // Add coins display here
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(Icons.monetization_on, color: Colors.yellow), // Coin icon
+                    SizedBox(width: 5), // Spacing between icon and text
+                    Text('25'), // Display the coin amount
+                    SizedBox(width: 20), // Spacing before the next icon
+                  ],
+                ),
+              ],
               bottom: const TabBar(
                   indicatorColor: Color(0xFF618264),
-                  labelStyle: TextStyle(fontSize: 20),
+                  labelStyle: TextStyle(fontSize: 20, fontFamily: 'Baloo'),
                   tabs: <Widget>[
                     Tab(
                       // icon: const Icon(Icons.list),
