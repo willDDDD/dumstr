@@ -134,12 +134,12 @@ class ItemCard extends StatelessWidget {
                       fontSize: 16,
                     ),
                   ),
-                  SizedBox(height: 5),
+                  SizedBox(height: 0),
                   Text(
-                    item['description'] ?? '',
+                    item['category'] + ", " + item['condition'] ?? '',
                     style: TextStyle(fontSize: 14),
                   ),
-                  SizedBox(height: 5),
+                  SizedBox(height: 0),
                   Text(
                     (item['distance']?.toString() ?? '') + " miles",
                     style: TextStyle(fontSize: 14),
