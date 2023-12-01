@@ -14,6 +14,10 @@ dependencies:
   geocoding: ^2.0.3
   timer_count_down: ^2.2.0
   google_fonts: ^6.1.0
+  geolocator: ^9.0.2
+  location: ^5.0.3
+  carousel_slider: ^4.2.1
+
 
 
 dev_dependencies:
@@ -24,9 +28,10 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - assets/data.json
     - assets/chair.png
+    - assets/chair_2.jpg
     - assets/chair2.png
     - assets/desk.png
+    - assets/desk2.jpeg
     - assets/lawnmower.png
-    - assets/chair.jpg
+    - assets/lawnmower_2.png

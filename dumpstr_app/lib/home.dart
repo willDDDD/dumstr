@@ -97,7 +97,6 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   final AppState appState = AppState();
-  int _currentIndex = 0;
 
   void updateFilters(String category, String distance, String condition) {
     setState(() {
@@ -112,73 +111,67 @@ class _HomePageState extends State<HomePage> {
     const LatLng center = const LatLng(40.11049763915532, -88.22830990000001);
     GoogleMapController mapController;
 
-    return Scaffold(
-      appBar: AppBar(
-          title: const Text('Dumstr'),
-          automaticallyImplyLeading: true,
-          centerTitle: true,
-          // elevation: 0.0,
-          // leading: BackButton(
-          //   onPressed: () {},
-          // ),
-          // actions: <Widget>[
-          //   IconButton(
-          //     icon: Icon(Icons.more_vert),
-          //     onPressed: () {},
-          //   ),
-          // ]
-          ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                const Text('List View'),
-                Switch(
-                  value: appState._isMapView,
-                  onChanged: (value) {
-                    setState(() {
-                      appState._isMapView = value;
-                    });
+    return DefaultTabController(
+        initialIndex: 0,
+        length: 2,
+        child: Scaffold(
+          appBar: AppBar(
+              title: const Text('Dumstr'),
+              automaticallyImplyLeading: false,
+              centerTitle: true,
+              bottom: const TabBar(
+                  indicatorColor: Color(0xFF618264),
+                  labelStyle: TextStyle(fontSize: 20),
+                  tabs: <Widget>[
+                    Tab(
+                      // icon: const Icon(Icons.list),
+                      text: "List",
+                    ),
+                    Tab(
+                      // icon: const Icon(Icons.map),
+                      text: "Map",
+                    ),
+                  ])),
+          body: Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                Filter(
+                  onChange: (category, distance, condition) {
+                    updateFilters(category, distance, condition);
                   },
                 ),
-                const Text('Map View'),
+                Expanded(
+                  child: TabBarView(
+                    children: <Widget>[
+                      Center(
+                        child: ListViewPage(
+                          category: appState.category,
+                          distance: appState.distance,
+                          condition: appState.condition,
+                          key: ValueKey(appState.category +
+                              appState.distance +
+                              appState.condition),
+                        ),
+                      ),
+                      Center(
+                          child: MapView(
+                              onMapCreated: (controller) =>
+                                  (mapController = controller),
+                              center: center,
+                              category: appState.category,
+                              distance: appState.distance,
+                              condition: appState.condition,
+                              key: ValueKey(appState.category +
+                                  appState.distance +
+                                  appState.condition))),
+                    ],
+                  ),
+                ),
               ],
             ),
-            Filter(
-              onChange: (category, distance, condition) {
-                updateFilters(category, distance, condition);
-              },
-            ),
-            appState._isMapView
-                ? Expanded(
-                    child: MapView(
-                        onMapCreated: (controller) =>
-                            (mapController = controller),
-                        center: center,
-                        category: appState.category,
-                        distance: appState.distance,
-                        condition: appState.condition,
-                        key: ValueKey(appState.category +
-                            appState.distance +
-                            appState.condition)),
-                  )
-                : Expanded(
-                    child: ListViewPage(
-                      category: appState.category,
-                      distance: appState.distance,
-                      condition: appState.condition,
-                      key: ValueKey(appState.category +
-                          appState.distance +
-                          appState.condition),
-                    ),
-                  ),
-          ],
-        ),
-      ),
-      bottomNavigationBar: BottomNavbar(),
-    );
+          ),
+          bottomNavigationBar: BottomNavbar(),
+        ));
   }
 }

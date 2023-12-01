@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:timer_count_down/timer_count_down.dart';
 import 'package:dumpstr_app/components/BottomNavbar.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 class ItemInfo extends StatefulWidget {
   final LatLng position;
@@ -13,7 +14,7 @@ class ItemInfo extends StatefulWidget {
   final String condition;
   bool hidden;
   final double timeSincePosted;
-  final String image;
+  final List<String> images;
 
   ItemInfo(
       {Key? key,
@@ -26,7 +27,7 @@ class ItemInfo extends StatefulWidget {
       required this.condition,
       required this.hidden,
       required this.timeSincePosted,
-      required this.image})
+      required this.images})
       : super(key: key);
   @override
   _ItemInfoState createState() => _ItemInfoState();
@@ -60,134 +61,165 @@ class _ItemInfoState extends State<ItemInfo> {
               margin: EdgeInsets.symmetric(horizontal: 0),
               clipBehavior: Clip.antiAliasWithSaveLayer,
               child: Column(children: [
-                Container(
-                  child: Image.asset(
-                    widget.image,
-                    height: 300,
-                    width: 400,
-                    fit: BoxFit.cover,
-                  ),
+                // Container(
+                //   // child: Image.asset(
+                //   //   widget.image,
+                //   //   height: 300,
+                //   //   width: 400,
+                //   //   fit: BoxFit.cover,
+                //   // ),
+                // ),
+
+                // CarouselSlider(
+                //   options: CarouselOptions(
+                //     // height: 300,
+                //     // aspectRatio: 16 / 9,
+                //     // viewportFraction: 1.0,
+                //     // enlargeCenterPage: false,
+                //     // enableInfiniteScroll: true,
+                //   ),
+                //   items: widget.images.map(( imageUrl) {
+                //     return Builder(
+                //       builder: (BuildContext context) {
+                //         return Image.asset(
+                //           imageUrl,
+                //           height: 300,
+                //           width: 400,
+                //           fit: BoxFit.cover,
+                //         );
+                //       },
+                //     );
+                //   }).toList(),
+                // ),
+                
+                CarouselSlider(
+                  options: CarouselOptions(),
+                  items: widget.images
+                      .map((item) => Container(
+                            child: Center(
+                                child: Image.network(item,
+                                    fit: BoxFit.cover, width: 1000)),
+                          ))
+                      .toList(),
                 ),
+
                 const SizedBox(height: 16),
-                Padding (
+                Padding(
                   padding: EdgeInsets.only(left: 15),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      children: [
-                        Expanded(
-                          // child: Padding (
-                          //   padding:  EdgeInsets.only(left: 10), 
-                          child: Text(
-                            widget.itemName,
-                            style: const TextStyle(
-                              fontSize: 25,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              widget.itemName,
+                              style: const TextStyle(
+                                fontSize: 25,
+                              ),
                             ),
                           ),
-                        // ),
-                        
-                        ),
-                        SizedBox(width: 80),
-                        if (widget.hidden) ...[
-                          const Icon(Icons.visibility_off),
-                          Countdown(
-                            seconds: hideTimer,
-                            build: (BuildContext context, double time) {
-                              final Duration duration =
-                                  Duration(seconds: time.toInt());
-                              final int minutes = duration.inMinutes;
-                              final int seconds = (duration.inSeconds % 60);
-                              return Text(
-                                '${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}',
-                                style: TextStyle(
-                                    fontSize: 20, color: Colors.black),
-                              );
-                            },
-                            interval: Duration(seconds: 1),
-                            onFinished: () {
-                              setState(() {
-                                widget.hidden = false;
-                              });
-                            },
-                          ),
+                          SizedBox(width: 80),
+                          if (widget.hidden) ...[
+                            const Icon(Icons.visibility_off),
+                            Countdown(
+                              seconds: hideTimer,
+                              build: (BuildContext context, double time) {
+                                final Duration duration =
+                                    Duration(seconds: time.toInt());
+                                final int minutes = duration.inMinutes;
+                                final int seconds = (duration.inSeconds % 60);
+                                return Text(
+                                  '${minutes.toString().padLeft(2, '0')}:${seconds.toString().padLeft(2, '0')}',
+                                  style: TextStyle(
+                                      fontSize: 20, color: Colors.black),
+                                );
+                              },
+                              interval: Duration(seconds: 1),
+                              onFinished: () {
+                                setState(() {
+                                  widget.hidden = false;
+                                });
+                              },
+                            ),
+                          ],
                         ],
-                      ],
-                    ),
-                    const SizedBox(height: 5),
-                    Text("Posted ${widget.timeSincePosted} hours ago"),
-                    Text(
-                      "Category: ${widget.category}",
-                      style: TextStyle(fontSize: 14),
-                    ),
-                    
-                    Text ("Condition: ${widget.condition}"),
-                    const SizedBox(height: 10),
-                    Text(
-                      widget.description,
-                      style: TextStyle(fontSize: 14),
-                    ),
-                    const SizedBox(height: 5),
-                  ],
-                ), ),
+                      ),
+                      const SizedBox(height: 5),
+                      Text("Posted ${widget.timeSincePosted} hours ago"),
+                      Text(
+                        "Category: ${widget.category}",
+                        style: TextStyle(fontSize: 14),
+                      ),
+                      Text("Condition: ${widget.condition}"),
+                      const SizedBox(height: 10),
+                      Text(
+                        widget.description,
+                        style: TextStyle(fontSize: 14),
+                      ),
+                      const SizedBox(height: 5),
+                    ],
+                  ),
+                ),
               ]),
             ),
           ),
           const SizedBox(height: 16),
-          Padding (
-            padding:  EdgeInsets.fromLTRB(0, 10, 0, 100),
-          child :Card(
-            // margin: EdgeInsets.symmetric(horizontal: 20),
-            clipBehavior: Clip.antiAliasWithSaveLayer,
-            child: Column(children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  // const Padding(
-                  //   padding: EdgeInsets.only(left: 25.0),
-                  Text(
-                    "Location",
-                    style: TextStyle(
-                      fontSize: 18,
+          Padding(
+            padding: EdgeInsets.fromLTRB(0, 10, 0, 100),
+            child: Card(
+              // margin: EdgeInsets.symmetric(horizontal: 20),
+              clipBehavior: Clip.antiAliasWithSaveLayer,
+              child: Column(children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    // const Padding(
+                    //   padding: EdgeInsets.only(left: 25.0),
+                    Text(
+                      "Location",
+                      style: TextStyle(
+                        fontSize: 18,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 10),
-                  Row(
-                    children: [
-                      const Icon(Icons.location_on),
-                      Text(
-                        widget.itemAddress,
-                        style: TextStyle(fontSize: 12),
-                      ),
-                      SizedBox(width: 8),
-                      const Icon(Icons.directions_walk),
-                      Text(
-                        "${widget.distance} miles",
-                        style: TextStyle(fontSize: 12),
-                      ),
-                    ],
-                  ),
-                  Container(
-                    width: 400,
-                    height: 250,
-                    child: GoogleMap(
-                      initialCameraPosition: CameraPosition(
-                        target: widget.position,
-                        zoom: 15.0,
-                      ),
-                      markers: _markers,
-                      onMapCreated: (GoogleMapController controller) {
-                        setState(() {
-                          mapController = controller;
-                        });
-                      },
-                      // zoomControlsEnabled: false,
+                    const SizedBox(height: 10),
+                    Row(
+                      children: [
+                        const Icon(Icons.location_on),
+                        Text(
+                          widget.itemAddress,
+                          style: TextStyle(fontSize: 12),
+                        ),
+                        SizedBox(width: 8),
+                        const Icon(Icons.directions_walk),
+                        Text(
+                          "${widget.distance} miles",
+                          style: TextStyle(fontSize: 12),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
-              ),
-            ]),
-          ), ),
+                    Container(
+                      width: 400,
+                      height: 250,
+                      child: GoogleMap(
+                        initialCameraPosition: CameraPosition(
+                          target: widget.position,
+                          zoom: 15.0,
+                        ),
+                        markers: _markers,
+                        onMapCreated: (GoogleMapController controller) {
+                          setState(() {
+                            mapController = controller;
+                          });
+                        },
+                        // zoomControlsEnabled: false,
+                      ),
+                    ),
+                  ],
+                ),
+              ]),
+            ),
+          ),
           const SizedBox(
             height: 2,
           ),

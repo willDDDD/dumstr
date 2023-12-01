@@ -89,7 +89,12 @@ class _ListViewPageState extends State<ListViewPage> {
             condition: item['condition'] ?? '',
             hidden: item['hidden'] ?? false,
             timeSincePosted: item['timeSincePosted'] ?? 0.0,
-            image: item['image'] ?? '',
+            // images: item['images'] ?? '',
+
+             images: item['images'] != null
+              ? List<String>.from(item['images'])
+              : [], 
+    
           ),
         ),
       );
@@ -171,9 +176,17 @@ class ItemCard extends StatelessWidget {
           condition: item['condition'] ?? '',
           hidden: item['hidden'] ?? false,
           timeSincePosted: item['timeSincePosted'] ?? 0.0,
-          image: item['image'] ?? '',
+          // images: item['images'] ?? '',
+           images: item['images'] != null
+                ? List<String>.from(item['images'])
+                : [], 
+         
         ),
       ),
     );
   }
 }
+
+
+       
+

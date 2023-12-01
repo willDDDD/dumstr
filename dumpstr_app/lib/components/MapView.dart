@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:geolocator/geolocator.dart';
 import 'dart:convert';
 import 'package:flutter/services.dart' show rootBundle;
 import 'dart:math';
 import 'package:dumpstr_app/components/item_info.dart';
 import 'dart:ui' as ui;
 import 'dart:typed_data';
+import 'package:location/location.dart';
 
 class CustomMarker {
   final String id;
   final LatLng position;
   final String itemName;
   final String itemDescription;
-  final String image;
+  // final String image;
+  final List<String> images;
   final String itemAddress;
   final double distance;
   final String category;
@@ -25,7 +28,7 @@ class CustomMarker {
     required this.position,
     required this.itemName,
     required this.itemDescription,
-    required this.image,
+    required this.images,
     required this.itemAddress,
     required this.distance,
     required this.category,
@@ -37,9 +40,12 @@ class CustomMarker {
 
 Future<Uint8List> getBytesFromAsset(String path, int width) async {
   ByteData data = await rootBundle.load(path);
-  ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(), targetWidth: width);
+  ui.Codec codec = await ui.instantiateImageCodec(data.buffer.asUint8List(),
+      targetWidth: width);
   ui.FrameInfo fi = await codec.getNextFrame();
-  return (await fi.image.toByteData(format: ui.ImageByteFormat.png))!.buffer.asUint8List();
+  return (await fi.image.toByteData(format: ui.ImageByteFormat.png))!
+      .buffer
+      .asUint8List();
 }
 
 class MapView extends StatefulWidget {
@@ -66,10 +72,28 @@ class _MapViewState extends State<MapView> {
   late GoogleMapController mapController;
   late Future<List<Marker>> markersFuture;
 
+  // LatLng? _currentPosition;
+  // bool _isLoading = true;
+  // Location _location = Location();
+
+  // void _onMapCreated(GoogleMapController _cntlr)
+  // {
+  //   mapController = _cntlr;
+  //   _location.onLocationChanged.listen((l) {
+  //     mapController.animateCamera(
+  //       CameraUpdate.newCameraPosition(
+  //         CameraPosition(target: LatLng(l.latitude!, l.longitude!),zoom: 15),
+  //         ),
+  //     );
+  //   });
+  // }
+
   @override
   void initState() {
+    // _getLocation();
     super.initState();
     markersFuture = fetchMarkers();
+    // getLocation();
   }
 
   Future<List<Marker>> fetchMarkers() async {
@@ -93,7 +117,7 @@ class _MapViewState extends State<MapView> {
             position: position,
             itemName: json['itemName'],
             itemDescription: json['description'],
-            image: json['image'],
+            images: json['images'],
             itemAddress: json['itemAddress'],
             distance: json['distance'],
             category: json['category'],
@@ -112,13 +136,24 @@ class _MapViewState extends State<MapView> {
       List<CustomMarker> customMarkers) async {
     List<Marker> markers = [];
 
+    Marker currentLoc = Marker(
+        markerId: MarkerId('current_location'),
+        position: widget.center,
+        icon: BitmapDescriptor.defaultMarkerWithHue(BitmapDescriptor.hueBlue));
+
+    markers.add(currentLoc);
+
     for (var customMarker in customMarkers) {
       // final imgIcon = await BitmapDescriptor.fromAssetImage(
       //   const ImageConfiguration(size: Size(20, 20)),
       //   customMarker.image,
       // );
 
-      final Uint8List markerIcon = await getBytesFromAsset(customMarker.image, 50);
+      final Uint8List markerIcon =
+          // await getBytesFromAsset(customMarker.image, 100);
+          await getBytesFromAsset(
+              customMarker.images.isNotEmpty ? customMarker.images[0] : '',
+              100);
 
       markers.add(
         Marker(
@@ -145,7 +180,7 @@ class _MapViewState extends State<MapView> {
                   condition: customMarker.condition,
                   hidden: customMarker.hidden,
                   timeSincePosted: customMarker.timeSincePosted,
-                  image: customMarker.image,
+                  images: customMarker.images,
                 ),
               ),
             );
@@ -190,6 +225,7 @@ class _MapViewState extends State<MapView> {
                     zoom: 15.0,
                   ),
                   markers: Set<Marker>.from(snapshot.data!),
+                  myLocationEnabled: true,
                 ),
               ),
             ),
