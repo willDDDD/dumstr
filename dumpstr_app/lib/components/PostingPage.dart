@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-// import 'package:camera/camera.dart';
-// import 'package:google_maps_webservice/places.dart';
 import 'package:image_picker/image_picker.dart';
-// import 'package:flutter_google_places/flutter_google_places.dart';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'dart:async';
 import 'dart:io';
 
@@ -24,41 +20,23 @@ const List<String> conditions = [
   'New'
 ];
 
-// final _places = GoogleMapsPlaces(apiKey: 'AIzaSyDc-YQ_0ATwBXONdLQUI07B2GLO9j5oreg');
 class PostingPage extends StatefulWidget {
-  // const PostingPage({
-  //   super.key,
-  //   // required this.camera,
-  // });
-  const PostingPage({
-    Key? key,
-    // required this.camera,
-  }) : super(key: key);
-  // final CameraDescription camera;
+  const PostingPage({Key? key}) : super(key: key);
 
   @override
   PostingPageState createState() => PostingPageState();
 }
 
 class PostingPageState extends State<PostingPage> {
+  final _formKey = GlobalKey<FormState>();
   List<String> imagePaths = [];
   int _currentIndex = 0;
 
-  String description = ''; // Add this variable to hold the description value
-
-//   Future<List<PlacesSearchResult>> searchPlaces(String query, LatLng location) async {
-//   final result = await _places.searchNearbyWithRadius(
-//     Location(lat: location.latitude, lng: location.longitude),
-//     5000,
-//     type: "restaurant",
-//     keyword: query,
-//   );
-//   if (result.status == "OK") {
-//     return result.results;
-//   } else {
-//     throw Exception(result.errorMessage);
-//   }
-// }
+  TextEditingController titleController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
+  String selectedCategory = 'Category';
+  String selectedCondition = 'Condition';
+  TextEditingController locationController = TextEditingController();
 
   Future<void> _selectImageFromCameraOrGallery() async {
     final imagePicker = ImagePicker();
@@ -96,10 +74,9 @@ class PostingPageState extends State<PostingPage> {
       },
     );
 
-    // Update the imagePaths if an image was taken or selected
     if (image != null) {
       setState(() {
-        imagePaths.add(image.path); // Add the new image path to the list
+        imagePaths.add(image.path);
       });
     }
   }
@@ -162,22 +139,14 @@ class PostingPageState extends State<PostingPage> {
     return Scaffold(
       body: SafeArea(
         child: SingleChildScrollView(
-          child: Align(
-            alignment: Alignment.center,
+          child: Form(
+            key: _formKey,
             child: Column(
               children: <Widget>[
                 Container(
                   margin: EdgeInsets.only(left: 20.0, top: 5.0),
                   child: Row(
                     children: [
-                      // TextButton.icon(
-                      //   onPressed: () {},
-                      //   icon: const Icon(
-                      //     Icons.close_rounded,
-                      //     color: Colors.black,
-                      //   ),
-                      //   label: Text(''),
-                      // ),
                       BackButton(
                         onPressed: () {
                           Navigator.pushNamed(context, '/home');
@@ -188,9 +157,6 @@ class PostingPageState extends State<PostingPage> {
                       ),
                       Text(
                         'Post an Item',
-                        // style: GoogleFonts.balooBhai2(
-                        //   fontSize: 30,
-                        // ),
                         style: (TextStyle(
                           fontSize: 30,
                         )),
@@ -198,10 +164,13 @@ class PostingPageState extends State<PostingPage> {
                     ],
                   ),
                 ),
+                // Image preview code...
+
                 _buildImagePreview(),
+
                 Container(
                   margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                  width: double.infinity, // Take up the entire available width
+                  width: double.infinity,
                   child: Container(
                     margin: EdgeInsets.symmetric(horizontal: 10),
                     decoration: BoxDecoration(
@@ -209,8 +178,7 @@ class PostingPageState extends State<PostingPage> {
                         color: Color(0xFF618264),
                         width: 2.0,
                       ),
-                      borderRadius: BorderRadius.circular(
-                          15), // Optional: Add border radius for rounded corners
+                      borderRadius: BorderRadius.circular(15),
                     ),
                     child: TextButton.icon(
                       onPressed: _selectImageFromCameraOrGallery,
@@ -222,93 +190,147 @@ class PostingPageState extends State<PostingPage> {
                     ),
                   ),
                 ),
-                Container(
-                  margin: EdgeInsets.only(left: 20.0, top: 5.0),
-                  child: Align(
-                    alignment: Alignment.topLeft,
+                // Validation for adding at least one photo
+                if (imagePaths.isEmpty)
+                  Container(
+                    margin: EdgeInsets.symmetric(horizontal: 20),
                     child: Text(
-                      'Title',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
+                      'Please upload at least one photo',
+                      style: TextStyle(color: Colors.red),
                     ),
                   ),
-                ),
-                Container(
-                  margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                  width: double.infinity,
-                  child: Container(
-                    margin: EdgeInsets.symmetric(horizontal: 10),
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Color(0xFF618264),
-                        width: 2.0,
-                      ),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: TextField(
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'What are you dumping?',
-                        contentPadding: EdgeInsets.all(10),
-                      ),
-                    ),
-                  ),
-                ),
-                Container(
-                  margin: EdgeInsets.only(left: 20.0, top: 5.0),
-                  child: Align(
-                    alignment: Alignment.topLeft,
-                    child: Text(
-                      'Details',
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-                ),
+
+                // Title field
+
+                // Container(
+                //   margin: EdgeInsets.only(left: 20.0, top: 5.0),
+                //   child: Align(
+                //     alignment: Alignment.topLeft,
+                //     child: Text(
+                //       'Title',
+                //       style: TextStyle(
+                //         fontWeight: FontWeight.bold,
+                //       ),
+                //     ),
+                //   ),
+                // ),
+                // Container(
+                //   margin: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                //   width: double.infinity,
+                //   child: Container(
+                //     margin: EdgeInsets.symmetric(horizontal: 10),
+                //     decoration: BoxDecoration(
+                //       border: Border.all(
+                //         color: Color(0xFF618264),
+                //         width: 2.0,
+                //       ),
+                //       borderRadius: BorderRadius.circular(15),
+                //     ),
+                //     child: TextFormField(
+                //       controller: titleController,
+                //       validator: (value) {
+                //         if (value == null || value.isEmpty) {
+                //           return 'Please enter a title';
+                //         }
+                //         return null;
+                //       },
+                //       decoration: InputDecoration(
+                //         border: InputBorder.none,
+                //         hintText: 'What are you dumping?',
+                //         contentPadding: EdgeInsets.all(10),
+                //       ),
+                //     ),
+                //   ),
+                // ),
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                // Details dropdown
+                // Similar validation can be applied to other fields
                 Container(
                   margin: EdgeInsets.fromLTRB(20, 0, 20, 0),
                   width: double.infinity,
                   decoration: BoxDecoration(
                     border: Border.all(
-                      color: Color(0xFF618264), // Set the border color
+                      color: Color(0xFF618264),
                       width: 2.0,
                     ),
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: DropdownMenu(
-                    width: 350,
-                    initialSelection: categories.first,
-                    dropdownMenuEntries: categories
-                        .map<DropdownMenuEntry<String>>((String value) {
-                      return DropdownMenuEntry<String>(
+                  child: DropdownButtonFormField<String>(
+                    value: selectedCategory,
+                    validator: (value) {
+                      if (value == 'Category') {
+                        return 'Please select a category';
+                      }
+                      return null;
+                    },
+                    onChanged: (newValue) {
+                      setState(() {
+                        selectedCategory = newValue!;
+                      });
+                    },
+                    items: categories.map((String value) {
+                      return DropdownMenuItem<String>(
                         value: value,
-                        label: value,
+                        child: Text(value),
                       );
                     }).toList(),
                   ),
                 ),
+                // Condition dropdown
                 Container(
                   margin: EdgeInsets.fromLTRB(20, 10, 20, 0),
                   width: double.infinity,
                   decoration: BoxDecoration(
                     border: Border.all(
-                      color: Color(0xFF618264), // Set the border color
+                      color: Color(0xFF618264),
                       width: 2.0,
                     ),
                     borderRadius: BorderRadius.circular(10),
                   ),
-                  child: DropdownMenu(
-                    width: 350,
-                    initialSelection: conditions.first,
-                    dropdownMenuEntries: conditions
-                        .map<DropdownMenuEntry<String>>((String value) {
-                      return DropdownMenuEntry<String>(
-                          value: value, label: value);
+                  child: DropdownButtonFormField<String>(
+                    value: selectedCondition,
+                    validator: (value) {
+                      if (value == 'Condition') {
+                        return 'Please select a condition';
+                      }
+                      return null;
+                    },
+                    onChanged: (newValue) {
+                      setState(() {
+                        selectedCondition = newValue!;
+                      });
+                    },
+                    items: conditions.map((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Text(value),
+                      );
                     }).toList(),
                   ),
                 ),
+                // Location field
                 Container(
                   margin: EdgeInsets.only(left: 20.0, top: 5.0),
                   child: Align(
@@ -333,17 +355,24 @@ class PostingPageState extends State<PostingPage> {
                       ),
                       borderRadius: BorderRadius.circular(15),
                     ),
-                    child: TextField(
+                    child: TextFormField(
+                      controller: locationController,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter a location';
+                        }
+                        return null;
+                      },
                       decoration: InputDecoration(
                         border: InputBorder.none,
                         hintText: 'Enter Location',
                         contentPadding: EdgeInsets.all(10),
-                        prefixIcon: Icon(Icons
-                            .add_location_outlined), // Use the prefixIcon property
+                        prefixIcon: Icon(Icons.add_location_outlined),
                       ),
                     ),
                   ),
                 ),
+                // Description field
                 Container(
                   margin: EdgeInsets.only(left: 20.0, top: 5.0),
                   child: Align(
@@ -368,7 +397,14 @@ class PostingPageState extends State<PostingPage> {
                       ),
                       borderRadius: BorderRadius.circular(10.0),
                     ),
-                    child: TextField(
+                    child: TextFormField(
+                      controller: descriptionController,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter a description';
+                        }
+                        return null;
+                      },
                       maxLines: null,
                       expands: true,
                       keyboardType: TextInputType.multiline,
@@ -380,6 +416,7 @@ class PostingPageState extends State<PostingPage> {
                     ),
                   ),
                 ),
+                // Post button
                 Container(
                   margin: EdgeInsets.only(
                       bottom: 10.0), // Add margin below the TextButton
@@ -387,7 +424,16 @@ class PostingPageState extends State<PostingPage> {
                   height: 50,
                   child: TextButton(
                     onPressed: () {
-                      // Add functionality for the 'Post' button
+                      if (_formKey.currentState!.validate()) {
+                        // If the form is valid, perform post action here
+                        String title = titleController.text;
+                        String description = descriptionController.text;
+                        String location = locationController.text;
+
+                        // Access selectedCategory and selectedCondition variables for their values
+
+                        // Perform post action or any other operation here
+                      }
                     },
                     child: const Text(
                       'Post',

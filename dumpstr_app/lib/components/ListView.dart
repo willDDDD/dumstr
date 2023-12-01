@@ -90,6 +90,9 @@ class _ListViewPageState extends State<ListViewPage> {
             hidden: item['hidden'] ?? false,
             timeSincePosted: item['timeSincePosted'] ?? 0.0,
             image: item['image'] ?? '',
+
+           
+    
           ),
         ),
       );
@@ -172,8 +175,13 @@ class ItemCard extends StatelessWidget {
           hidden: item['hidden'] ?? false,
           timeSincePosted: item['timeSincePosted'] ?? 0.0,
           image: item['image'] ?? '',
+           
         ),
       ),
     );
   }
 }
+
+
+       
+

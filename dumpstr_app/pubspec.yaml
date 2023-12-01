@@ -16,6 +16,8 @@ dependencies:
   google_fonts: ^3.0.0
   geolocator: ^9.0.2
   location: ^5.0.3
+  carousel_slider: ^4.2.1
+
 
 
 dev_dependencies:
@@ -30,10 +32,12 @@ flutter:
       fonts:
         - asset: assets/BalooBhaijaan2-VariableFont_wght.ttf
   assets:
-    - assets/data.json
     - assets/chair.png
+    - assets/chair_2.jpg
+    - assets/data.json
     - assets/chair2.png
     - assets/desk.png
+    - assets/desk2.jpeg
     - assets/lawnmower.png
     - assets/chair.jpg
     - assets/logo.png
