@@ -14,8 +14,7 @@ class CustomMarker {
   final LatLng position;
   final String itemName;
   final String itemDescription;
-  // final String image;
-  final List<String> images;
+  final String image;
   final String itemAddress;
   final double distance;
   final String category;
@@ -28,7 +27,7 @@ class CustomMarker {
     required this.position,
     required this.itemName,
     required this.itemDescription,
-    required this.images,
+    required this.image,
     required this.itemAddress,
     required this.distance,
     required this.category,
@@ -117,7 +116,7 @@ class _MapViewState extends State<MapView> {
             position: position,
             itemName: json['itemName'],
             itemDescription: json['description'],
-            images: json['images'],
+            image: json['image'],
             itemAddress: json['itemAddress'],
             distance: json['distance'],
             category: json['category'],
@@ -150,10 +149,7 @@ class _MapViewState extends State<MapView> {
       // );
 
       final Uint8List markerIcon =
-          // await getBytesFromAsset(customMarker.image, 100);
-          await getBytesFromAsset(
-              customMarker.images.isNotEmpty ? customMarker.images[0] : '',
-              100);
+          await getBytesFromAsset(customMarker.image, 100);
 
       markers.add(
         Marker(
@@ -180,7 +176,7 @@ class _MapViewState extends State<MapView> {
                   condition: customMarker.condition,
                   hidden: customMarker.hidden,
                   timeSincePosted: customMarker.timeSincePosted,
-                  images: customMarker.images,
+                  image: customMarker.image,
                 ),
               ),
             );

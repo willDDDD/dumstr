@@ -30,6 +30,7 @@ flutter:
   assets:
     - assets/chair.png
     - assets/chair_2.jpg
+    - assets/data.json
     - assets/chair2.png
     - assets/desk.png
     - assets/desk2.jpeg

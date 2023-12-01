@@ -14,7 +14,7 @@ class ItemInfo extends StatefulWidget {
   final String condition;
   bool hidden;
   final double timeSincePosted;
-  final List<String> images;
+  final String image;
 
   ItemInfo(
       {Key? key,
@@ -27,7 +27,7 @@ class ItemInfo extends StatefulWidget {
       required this.condition,
       required this.hidden,
       required this.timeSincePosted,
-      required this.images})
+      required this.image})
       : super(key: key);
   @override
   _ItemInfoState createState() => _ItemInfoState();
@@ -61,14 +61,14 @@ class _ItemInfoState extends State<ItemInfo> {
               margin: EdgeInsets.symmetric(horizontal: 0),
               clipBehavior: Clip.antiAliasWithSaveLayer,
               child: Column(children: [
-                // Container(
-                //   // child: Image.asset(
-                //   //   widget.image,
-                //   //   height: 300,
-                //   //   width: 400,
-                //   //   fit: BoxFit.cover,
-                //   // ),
-                // ),
+                Container(
+                  child: Image.asset(
+                    widget.image,
+                    height: 300,
+                    width: 400,
+                    fit: BoxFit.cover,
+                  ),
+                ),
 
                 // CarouselSlider(
                 //   options: CarouselOptions(
@@ -92,16 +92,16 @@ class _ItemInfoState extends State<ItemInfo> {
                 //   }).toList(),
                 // ),
                 
-                CarouselSlider(
-                  options: CarouselOptions(),
-                  items: widget.images
-                      .map((item) => Container(
-                            child: Center(
-                                child: Image.network(item,
-                                    fit: BoxFit.cover, width: 1000)),
-                          ))
-                      .toList(),
-                ),
+                // CarouselSlider(
+                //   options: CarouselOptions(),
+                //   items: widget.images
+                //       .map((item) => Container(
+                //             child: Center(
+                //                 child: Image.network(item,
+                //                     fit: BoxFit.cover, width: 1000)),
+                //           ))
+                //       .toList(),
+                // ),
 
                 const SizedBox(height: 16),
                 Padding(
